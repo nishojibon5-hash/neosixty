@@ -1,22 +1,88 @@
-import { Search, MoreHorizontal, Video, Phone } from "lucide-react";
+import { Search, MoreHorizontal, Video, Phone, UserPlus } from "lucide-react";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Separator } from "./ui/separator";
 import { Badge } from "./ui/badge";
+import { UserProfile, FriendRequestCard } from "./UserProfile";
+import { useApp } from "../context/AppContext";
+
+const friendSuggestions = [
+  { id: 'user1', name: 'Rahman Ahmed', avatar: '/placeholder.svg', username: 'rahman.ahmed' },
+  { id: 'user2', name: 'Fatima Khan', avatar: '/placeholder.svg', username: 'fatima.khan' },
+  { id: 'user3', name: 'Hassan Ali', avatar: '/placeholder.svg', username: 'hassan.ali' }
+];
+
+const friendRequests = [
+  {
+    id: 'req1',
+    from: { id: 'user4', name: 'Ayesha Rahman', avatar: '/placeholder.svg', username: 'ayesha.r' },
+    timeAgo: '2 hours ago'
+  }
+];
 
 export function RightSidebar() {
+  const { acceptFriendRequest } = useApp();
+
+  const handleAcceptRequest = async (requestId: string) => {
+    await acceptFriendRequest(requestId);
+  };
+
+  const handleDeclineRequest = async (requestId: string) => {
+    // Handle decline
+  };
+
   return (
     <aside className="hidden xl:block w-80 h-[calc(100vh-4rem)] overflow-y-auto p-4 space-y-4">
+      {/* Friend Requests */}
+      {friendRequests.length > 0 && (
+        <div className="space-y-3">
+          <h3 className="text-lg font-semibold text-muted-foreground">Friend Requests</h3>
+          {friendRequests.map((request) => (
+            <FriendRequestCard
+              key={request.id}
+              request={request}
+              onAccept={handleAcceptRequest}
+              onDecline={handleDeclineRequest}
+            />
+          ))}
+        </div>
+      )}
+
+      {friendRequests.length > 0 && <Separator />}
+
+      {/* People You May Know */}
+      <div className="space-y-3">
+        <h3 className="text-lg font-semibold text-muted-foreground">People you may know</h3>
+        {friendSuggestions.slice(0, 2).map((user) => (
+          <div key={user.id} className="flex items-center gap-3 p-3 rounded-lg border hover:bg-muted/50">
+            <Avatar className="h-10 w-10">
+              <AvatarImage src={user.avatar} />
+              <AvatarFallback>{user.name.slice(0, 2).toUpperCase()}</AvatarFallback>
+            </Avatar>
+            <div className="flex-1">
+              <h4 className="font-medium">{user.name}</h4>
+              <p className="text-sm text-muted-foreground">@{user.username}</p>
+            </div>
+            <Button size="sm" className="flex items-center gap-1">
+              <UserPlus className="h-3 w-3" />
+              Add
+            </Button>
+          </div>
+        ))}
+      </div>
+
+      <Separator />
+
       {/* Sponsored */}
       <div className="space-y-3">
         <h3 className="text-lg font-semibold text-muted-foreground">Sponsored</h3>
         
         <div className="p-3 rounded-lg border hover:bg-muted/50 cursor-pointer">
           <div className="flex gap-3">
-            <div className="h-20 w-20 rounded-lg bg-gradient-to-br from-purple-400 to-pink-500 flex-shrink-0"></div>
+            <div className="h-16 w-16 rounded-lg bg-gradient-to-br from-purple-400 to-pink-500 flex-shrink-0"></div>
             <div className="space-y-1">
               <h4 className="font-medium">New Tech Course</h4>
-              <p className="text-sm text-muted-foreground">Learn React & Next.js from scratch</p>
+              <p className="text-xs text-muted-foreground">Learn React & Next.js from scratch</p>
               <p className="text-xs text-muted-foreground">example.com</p>
             </div>
           </div>
@@ -24,10 +90,10 @@ export function RightSidebar() {
         
         <div className="p-3 rounded-lg border hover:bg-muted/50 cursor-pointer">
           <div className="flex gap-3">
-            <div className="h-20 w-20 rounded-lg bg-gradient-to-br from-blue-400 to-cyan-500 flex-shrink-0"></div>
+            <div className="h-16 w-16 rounded-lg bg-gradient-to-br from-blue-400 to-cyan-500 flex-shrink-0"></div>
             <div className="space-y-1">
               <h4 className="font-medium">Cloud Hosting</h4>
-              <p className="text-sm text-muted-foreground">Deploy your apps instantly</p>
+              <p className="text-xs text-muted-foreground">Deploy your apps instantly</p>
               <p className="text-xs text-muted-foreground">hosting.com</p>
             </div>
           </div>
