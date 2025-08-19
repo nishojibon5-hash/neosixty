@@ -1,8 +1,49 @@
+export interface WorkInfo {
+  id: string;
+  company: string;
+  position: string;
+  startDate: string;
+  endDate?: string;
+  location?: string;
+  description?: string;
+}
+
+export interface EducationInfo {
+  id: string;
+  school: string;
+  degree?: string;
+  fieldOfStudy?: string;
+  startYear: string;
+  endYear?: string;
+}
+
+export interface UserProfile {
+  bio?: string;
+  coverPhoto?: string;
+  location?: string;
+  website?: string;
+  phoneNumber?: string;
+  email?: string;
+  birthday?: string;
+  relationshipStatus?: 'Single' | 'In a relationship' | 'Married' | 'Complicated';
+  work: WorkInfo[];
+  education: EducationInfo[];
+  socialLinks: {
+    facebook?: string;
+    twitter?: string;
+    instagram?: string;
+    linkedin?: string;
+  };
+  interests: string[];
+  languages: string[];
+}
+
 export interface User {
   id: string;
   name: string;
   avatar: string;
   username: string;
+  profile?: UserProfile;
 }
 
 export type ReactionType = 'like' | 'love' | 'haha' | 'wow' | 'angry' | 'sad';
