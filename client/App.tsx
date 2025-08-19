@@ -19,9 +19,10 @@ function App() {
             
             <main className="flex-1 min-w-0">
               <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
             </main>
             
             <RightSidebar />
