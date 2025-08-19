@@ -42,8 +42,11 @@ export function Post({ post }: PostProps) {
   };
 
   const handleShare = () => {
+    setShowShareDialog(true);
+  };
+
+  const handleConfirmShare = () => {
     sharePost(post.id);
-    toast.success("Post shared!");
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
