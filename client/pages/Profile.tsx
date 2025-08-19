@@ -1,27 +1,39 @@
 import { useState, useRef } from "react";
-import { Camera, Edit3, MapPin, Briefcase, GraduationCap, Heart, Globe, Phone, Mail, Calendar, Plus, X } from "lucide-react";
+import { Camera, Edit3, MapPin, Briefcase, GraduationCap, Heart, Globe, Phone, Mail, Calendar, Plus } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
-import { Badge } from "../components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../components/ui/dialog";
-import { Input } from "../components/ui/input";
-import { Textarea } from "../components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import { useApp } from "../context/AppContext";
 import { Post } from "../components/Post";
 import { CreatePost } from "../components/CreatePost";
+import { 
+  EditableWorkSection, 
+  EditableEducationSection, 
+  EditableContactInfo, 
+  EditableBasicInfo 
+} from "../components/EditableProfileSection";
+import { WorkInfo, EducationInfo, UserProfile } from "@shared/types";
 import { toast } from "sonner";
 
 export default function Profile() {
-  const { state } = useApp();
+  const { state, updateUserProfile } = useApp();
   const [isEditingCover, setIsEditingCover] = useState(false);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [isEditingBio, setIsEditingBio] = useState(false);
-  const [coverPhoto, setCoverPhoto] = useState(state.currentUser.profile?.coverPhoto || "");
+  
+  // Get current profile or create default
+  const currentProfile = state.currentUser.profile || {
+    work: [],
+    education: [],
+    socialLinks: {},
+    interests: [],
+    languages: []
+  };
+
+  const [coverPhoto, setCoverPhoto] = useState(currentProfile.coverPhoto || "");
   const [profilePicture, setProfilePicture] = useState(state.currentUser.avatar);
-  const [bio, setBio] = useState(state.currentUser.profile?.bio || "");
+  const [bio, setBio] = useState(currentProfile.bio || "");
   const [tempBio, setTempBio] = useState(bio);
   
   const coverInputRef = useRef<HTMLInputElement>(null);
@@ -32,7 +44,9 @@ export default function Profile() {
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        setCoverPhoto(e.target?.result as string);
+        const newCoverPhoto = e.target?.result as string;
+        setCoverPhoto(newCoverPhoto);
+        updateUserProfile({ ...currentProfile, coverPhoto: newCoverPhoto });
         setIsEditingCover(false);
         toast.success("Cover photo updated!");
       };
@@ -45,7 +59,10 @@ export default function Profile() {
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        setProfilePicture(e.target?.result as string);
+        const newAvatar = e.target?.result as string;
+        setProfilePicture(newAvatar);
+        // Update both avatar and profile
+        updateUserProfile(currentProfile);
         setIsEditingProfile(false);
         toast.success("Profile picture updated!");
       };
@@ -55,8 +72,36 @@ export default function Profile() {
 
   const saveBio = () => {
     setBio(tempBio);
+    updateUserProfile({ ...currentProfile, bio: tempBio });
     setIsEditingBio(false);
     toast.success("Bio updated!");
+  };
+
+  const handleWorkUpdate = (work: WorkInfo[]) => {
+    updateUserProfile({ ...currentProfile, work });
+  };
+
+  const handleEducationUpdate = (education: EducationInfo[]) => {
+    updateUserProfile({ ...currentProfile, education });
+  };
+
+  const handleContactInfoUpdate = (contactInfo: { email?: string; phone?: string; website?: string }) => {
+    updateUserProfile({ 
+      ...currentProfile, 
+      email: contactInfo.email,
+      phoneNumber: contactInfo.phone,
+      website: contactInfo.website
+    });
+  };
+
+  const handleBasicInfoUpdate = (basicInfo: { birthday?: string; relationshipStatus?: string; location?: string; languages?: string[] }) => {
+    updateUserProfile({ 
+      ...currentProfile, 
+      birthday: basicInfo.birthday,
+      relationshipStatus: basicInfo.relationshipStatus as any,
+      location: basicInfo.location,
+      languages: basicInfo.languages || []
+    });
   };
 
   const userPosts = state.posts.filter(post => post.author.id === state.currentUser.id);
@@ -68,7 +113,7 @@ export default function Profile() {
         <div 
           className="h-80 bg-gradient-to-br from-blue-400 to-purple-600 rounded-lg overflow-hidden relative group cursor-pointer"
           style={coverPhoto ? { backgroundImage: `url(${coverPhoto})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
-          onClick={() => setIsEditingCover(true)}
+          onClick={() => coverInputRef.current?.click()}
         >
           {!coverPhoto && (
             <div className="absolute inset-0 flex items-center justify-center">
@@ -100,7 +145,7 @@ export default function Profile() {
       <div className="relative -mt-20 px-6">
         <div className="flex flex-col md:flex-row gap-6 items-start">
           {/* Profile Picture */}
-          <div className="relative group cursor-pointer" onClick={() => setIsEditingProfile(true)}>
+          <div className="relative group cursor-pointer" onClick={() => profileInputRef.current?.click()}>
             <Avatar className="h-40 w-40 border-4 border-white shadow-lg">
               <AvatarImage src={profilePicture} />
               <AvatarFallback className="text-4xl">{state.currentUser.name.slice(0, 2).toUpperCase()}</AvatarFallback>
@@ -136,11 +181,11 @@ export default function Profile() {
             <div className="mb-4">
               {isEditingBio ? (
                 <div className="space-y-2">
-                  <Textarea
+                  <textarea
                     placeholder="Write something about yourself..."
                     value={tempBio}
                     onChange={(e) => setTempBio(e.target.value)}
-                    className="min-h-[80px]"
+                    className="w-full min-h-[80px] p-3 border rounded-md resize-none"
                   />
                   <div className="flex gap-2">
                     <Button size="sm" onClick={saveBio}>Save</Button>
@@ -166,22 +211,30 @@ export default function Profile() {
 
             {/* Quick Info */}
             <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-              <div className="flex items-center gap-1">
-                <Briefcase className="h-4 w-4" />
-                <span>Software Developer at Builder.io</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <GraduationCap className="h-4 w-4" />
-                <span>University of Dhaka</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <MapPin className="h-4 w-4" />
-                <span>Dhaka, Bangladesh</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <Heart className="h-4 w-4" />
-                <span>Single</span>
-              </div>
+              {currentProfile.work.length > 0 && (
+                <div className="flex items-center gap-1">
+                  <Briefcase className="h-4 w-4" />
+                  <span>{currentProfile.work[0].position} at {currentProfile.work[0].company}</span>
+                </div>
+              )}
+              {currentProfile.education.length > 0 && (
+                <div className="flex items-center gap-1">
+                  <GraduationCap className="h-4 w-4" />
+                  <span>{currentProfile.education[0].school}</span>
+                </div>
+              )}
+              {currentProfile.location && (
+                <div className="flex items-center gap-1">
+                  <MapPin className="h-4 w-4" />
+                  <span>{currentProfile.location}</span>
+                </div>
+              )}
+              {currentProfile.relationshipStatus && (
+                <div className="flex items-center gap-1">
+                  <Heart className="h-4 w-4" />
+                  <span>{currentProfile.relationshipStatus}</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -202,7 +255,7 @@ export default function Profile() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Left Column - About Summary */}
               <div className="space-y-4">
-                <IntroCard />
+                <IntroCard profile={currentProfile} />
                 <PhotosCard />
                 <FriendsCard />
               </div>
@@ -223,7 +276,36 @@ export default function Profile() {
           </TabsContent>
 
           <TabsContent value="about" className="mt-6">
-            <AboutSection />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Work & Education */}
+              <div className="space-y-6">
+                <EditableWorkSection 
+                  workInfo={currentProfile.work} 
+                  onUpdate={handleWorkUpdate} 
+                />
+                <EditableEducationSection 
+                  educationInfo={currentProfile.education} 
+                  onUpdate={handleEducationUpdate} 
+                />
+              </div>
+
+              {/* Contact & Basic Info */}
+              <div className="space-y-6">
+                <EditableContactInfo
+                  email={currentProfile.email}
+                  phone={currentProfile.phoneNumber}
+                  website={currentProfile.website}
+                  onUpdate={handleContactInfoUpdate}
+                />
+                <EditableBasicInfo
+                  birthday={currentProfile.birthday}
+                  relationshipStatus={currentProfile.relationshipStatus}
+                  location={currentProfile.location}
+                  languages={currentProfile.languages}
+                  onUpdate={handleBasicInfoUpdate}
+                />
+              </div>
+            </div>
           </TabsContent>
 
           <TabsContent value="photos" className="mt-6">
@@ -244,7 +326,7 @@ export default function Profile() {
 }
 
 // About Summary Card Component
-function IntroCard() {
+function IntroCard({ profile }: { profile: UserProfile }) {
   return (
     <Card>
       <CardHeader>
@@ -254,22 +336,30 @@ function IntroCard() {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
-        <div className="flex items-center gap-2 text-sm">
-          <Briefcase className="h-4 w-4" />
-          <span>Software Developer at <strong>Builder.io</strong></span>
-        </div>
-        <div className="flex items-center gap-2 text-sm">
-          <GraduationCap className="h-4 w-4" />
-          <span>Studied at <strong>University of Dhaka</strong></span>
-        </div>
-        <div className="flex items-center gap-2 text-sm">
-          <MapPin className="h-4 w-4" />
-          <span>Lives in <strong>Dhaka, Bangladesh</strong></span>
-        </div>
-        <div className="flex items-center gap-2 text-sm">
-          <Heart className="h-4 w-4" />
-          <span><strong>Single</strong></span>
-        </div>
+        {profile.work.length > 0 && (
+          <div className="flex items-center gap-2 text-sm">
+            <Briefcase className="h-4 w-4" />
+            <span>{profile.work[0].position} at <strong>{profile.work[0].company}</strong></span>
+          </div>
+        )}
+        {profile.education.length > 0 && (
+          <div className="flex items-center gap-2 text-sm">
+            <GraduationCap className="h-4 w-4" />
+            <span>Studied at <strong>{profile.education[0].school}</strong></span>
+          </div>
+        )}
+        {profile.location && (
+          <div className="flex items-center gap-2 text-sm">
+            <MapPin className="h-4 w-4" />
+            <span>Lives in <strong>{profile.location}</strong></span>
+          </div>
+        )}
+        {profile.relationshipStatus && (
+          <div className="flex items-center gap-2 text-sm">
+            <Heart className="h-4 w-4" />
+            <span><strong>{profile.relationshipStatus}</strong></span>
+          </div>
+        )}
         <div className="flex items-center gap-2 text-sm">
           <Calendar className="h-4 w-4" />
           <span>Joined <strong>January 2020</strong></span>
@@ -325,118 +415,6 @@ function FriendsCard() {
         </div>
       </CardContent>
     </Card>
-  );
-}
-
-// About Section Component
-function AboutSection() {
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <WorkEducationSection />
-      <ContactBasicInfoSection />
-    </div>
-  );
-}
-
-function WorkEducationSection() {
-  return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            Work
-            <Button size="sm" variant="outline">
-              <Plus className="h-4 w-4 mr-1" />
-              Add
-            </Button>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-start gap-3">
-            <Briefcase className="h-5 w-5 mt-0.5" />
-            <div>
-              <p className="font-medium">Software Developer</p>
-              <p className="text-sm text-muted-foreground">Builder.io • 2023 - Present</p>
-              <p className="text-sm text-muted-foreground">Dhaka, Bangladesh</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            Education
-            <Button size="sm" variant="outline">
-              <Plus className="h-4 w-4 mr-1" />
-              Add
-            </Button>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-start gap-3">
-            <GraduationCap className="h-5 w-5 mt-0.5" />
-            <div>
-              <p className="font-medium">University of Dhaka</p>
-              <p className="text-sm text-muted-foreground">Bachelor's degree, Computer Science</p>
-              <p className="text-sm text-muted-foreground">2018 - 2022</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
-
-function ContactBasicInfoSection() {
-  return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            Contact Info
-            <Button size="sm" variant="outline">Edit</Button>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center gap-3">
-            <Mail className="h-4 w-4" />
-            <span className="text-sm">salman@example.com</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <Phone className="h-4 w-4" />
-            <span className="text-sm">+88 01700 000000</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <Globe className="h-4 w-4" />
-            <span className="text-sm">www.mdsalman.dev</span>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            Basic Info
-            <Button size="sm" variant="outline">Edit</Button>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex justify-between">
-            <span className="text-sm text-muted-foreground">Birthday</span>
-            <span className="text-sm">January 15, 1998</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-sm text-muted-foreground">Gender</span>
-            <span className="text-sm">Male</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-sm text-muted-foreground">Languages</span>
-            <span className="text-sm">Bengali, English, Hindi</span>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
   );
 }
 
