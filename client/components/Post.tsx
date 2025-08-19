@@ -198,6 +198,14 @@ export function Post({ post }: PostProps) {
             </div>
           </div>
         )}
+
+        {/* Share Dialog */}
+        <ShareDialog
+          isOpen={showShareDialog}
+          onClose={() => setShowShareDialog(false)}
+          post={post}
+          onShare={handleConfirmShare}
+        />
       </CardContent>
     </Card>
   );
