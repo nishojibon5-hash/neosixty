@@ -118,7 +118,7 @@ const initialState: AppState = {
   stories: initialStories
 };
 
-type Action = 
+type Action =
   | { type: 'ADD_POST'; payload: { content: string; isHtml: boolean; image?: string; video?: string; mentions?: string[]; tags?: string[] } }
   | { type: 'ADD_STORY'; payload: { image: string } }
   | { type: 'ADD_REACTION'; payload: { postId: string; reactionType: ReactionType } }
@@ -129,7 +129,9 @@ type Action =
   | { type: 'SEND_FRIEND_REQUEST'; payload: { userId: string } }
   | { type: 'ACCEPT_FRIEND_REQUEST'; payload: { requestId: string } }
   | { type: 'FOLLOW_USER'; payload: { userId: string } }
-  | { type: 'UNFOLLOW_USER'; payload: { userId: string } };
+  | { type: 'UNFOLLOW_USER'; payload: { userId: string } }
+  | { type: 'UPDATE_USER_PROFILE'; payload: { profile: UserProfile } }
+  | { type: 'UPDATE_USER_AVATAR'; payload: { avatar: string } };
 
 function appReducer(state: AppState, action: Action): AppState {
   switch (action.type) {
