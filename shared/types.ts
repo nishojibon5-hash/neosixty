@@ -114,4 +114,6 @@ export interface AppContextType {
   acceptFriendRequest: (requestId: string) => void;
   followUser: (userId: string) => void;
   unfollowUser: (userId: string) => void;
+  updateUserProfile: (profile: UserProfile) => void;
+  updateUserAvatar: (avatar: string) => void;
 }
