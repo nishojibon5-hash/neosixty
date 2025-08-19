@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, ReactNode } from 'react';
-import { AppState, AppContextType, Post, Story, Comment, User } from '@shared/types';
+import { AppState, AppContextType, Post, Story, Comment, User, ReactionType, FriendRequest } from '@shared/types';
 
 const currentUser: User = {
   id: 'current-user',
@@ -25,13 +25,26 @@ const initialStories: Story[] = [
   }
 ];
 
+const createEmptyReactions = () => ({
+  like: { count: 0, users: [] },
+  love: { count: 0, users: [] },
+  haha: { count: 0, users: [] },
+  wow: { count: 0, users: [] },
+  angry: { count: 0, users: [] },
+  sad: { count: 0, users: [] }
+});
+
 const initialPosts: Post[] = [
   {
     id: 'post-1',
     author: { id: 'ahmed', name: 'Ahmed Khan', avatar: '/placeholder.svg', username: 'ahmed.khan' },
     content: 'Just finished building my first React Native app! 🚀 The journey from web development to mobile has been incredible. Can\'t wait to share it with everyone soon.',
+    isHtml: false,
     timeAgo: '2 hours ago',
-    likes: 42,
+    reactions: {
+      ...createEmptyReactions(),
+      like: { count: 42, users: ['user1', 'user2'] }
+    },
     comments: [
       {
         id: 'comment-1',
@@ -42,18 +55,24 @@ const initialPosts: Post[] = [
       }
     ],
     shares: 3,
-    isLiked: false
+    mentions: ['md.salman'],
+    tags: ['reactnative', 'mobile']
   },
   {
     id: 'post-2',
     author: { id: 'sarah', name: 'Sarah Ali', avatar: '/placeholder.svg', username: 'sarah.ali' },
-    content: 'Beautiful sunset from my rooftop today. Sometimes we need to pause and appreciate the simple moments in life. 🌅 What made you smile today?',
+    content: '<div style="padding: 20px; background: linear-gradient(45deg, #ff6b6b, #4ecdc4); border-radius: 10px; color: white; text-align: center;"><h2>🌅 Beautiful Sunset</h2><p>Sometimes we need to pause and appreciate the simple moments in life.</p><p><strong>What made you smile today?</strong></p></div>',
+    isHtml: true,
     image: '/placeholder.svg',
     timeAgo: '4 hours ago',
-    likes: 127,
+    reactions: {
+      ...createEmptyReactions(),
+      love: { count: 87, users: ['currentUser', 'user3'] },
+      wow: { count: 40, users: ['user4'] }
+    },
     comments: [],
     shares: 12,
-    isLiked: true
+    tags: ['sunset', 'nature']
   }
 ];
 
@@ -64,12 +83,17 @@ const initialState: AppState = {
 };
 
 type Action = 
-  | { type: 'ADD_POST'; payload: { content: string; image?: string } }
+  | { type: 'ADD_POST'; payload: { content: string; isHtml: boolean; image?: string; video?: string; mentions?: string[]; tags?: string[] } }
   | { type: 'ADD_STORY'; payload: { image: string } }
-  | { type: 'TOGGLE_LIKE'; payload: { postId: string } }
-  | { type: 'ADD_COMMENT'; payload: { postId: string; content: string } }
+  | { type: 'ADD_REACTION'; payload: { postId: string; reactionType: ReactionType } }
+  | { type: 'REMOVE_REACTION'; payload: { postId: string; reactionType: ReactionType } }
+  | { type: 'ADD_COMMENT'; payload: { postId: string; content: string; image?: string; video?: string } }
   | { type: 'LIKE_COMMENT'; payload: { postId: string; commentId: string } }
-  | { type: 'SHARE_POST'; payload: { postId: string } };
+  | { type: 'SHARE_POST'; payload: { postId: string } }
+  | { type: 'SEND_FRIEND_REQUEST'; payload: { userId: string } }
+  | { type: 'ACCEPT_FRIEND_REQUEST'; payload: { requestId: string } }
+  | { type: 'FOLLOW_USER'; payload: { userId: string } }
+  | { type: 'UNFOLLOW_USER'; payload: { userId: string } };
 
 function appReducer(state: AppState, action: Action): AppState {
   switch (action.type) {
@@ -78,12 +102,15 @@ function appReducer(state: AppState, action: Action): AppState {
         id: `post-${Date.now()}`,
         author: state.currentUser,
         content: action.payload.content,
+        isHtml: action.payload.isHtml,
         image: action.payload.image,
+        video: action.payload.video,
         timeAgo: 'Just now',
-        likes: 0,
+        reactions: createEmptyReactions(),
         comments: [],
         shares: 0,
-        isLiked: false
+        mentions: action.payload.mentions,
+        tags: action.payload.tags
       };
       return {
         ...state,
@@ -105,18 +132,43 @@ function appReducer(state: AppState, action: Action): AppState {
       };
     }
     
-    case 'TOGGLE_LIKE': {
+    case 'ADD_REACTION': {
       return {
         ...state,
-        posts: state.posts.map(post => 
-          post.id === action.payload.postId
-            ? {
-                ...post,
-                isLiked: !post.isLiked,
-                likes: post.isLiked ? post.likes - 1 : post.likes + 1
-              }
-            : post
-        )
+        posts: state.posts.map(post => {
+          if (post.id === action.payload.postId) {
+            const reactions = { ...post.reactions };
+            const reactionType = action.payload.reactionType;
+            
+            reactions[reactionType] = {
+              count: reactions[reactionType].count + 1,
+              users: [...reactions[reactionType].users, state.currentUser.id]
+            };
+            
+            return { ...post, reactions };
+          }
+          return post;
+        })
+      };
+    }
+    
+    case 'REMOVE_REACTION': {
+      return {
+        ...state,
+        posts: state.posts.map(post => {
+          if (post.id === action.payload.postId) {
+            const reactions = { ...post.reactions };
+            const reactionType = action.payload.reactionType;
+            
+            reactions[reactionType] = {
+              count: Math.max(0, reactions[reactionType].count - 1),
+              users: reactions[reactionType].users.filter(userId => userId !== state.currentUser.id)
+            };
+            
+            return { ...post, reactions };
+          }
+          return post;
+        })
       };
     }
     
@@ -125,6 +177,8 @@ function appReducer(state: AppState, action: Action): AppState {
         id: `comment-${Date.now()}`,
         author: state.currentUser,
         content: action.payload.content,
+        image: action.payload.image,
+        video: action.payload.video,
         timeAgo: 'Just now',
         likes: 0
       };
@@ -156,6 +210,14 @@ function appReducer(state: AppState, action: Action): AppState {
       };
     }
     
+    case 'SEND_FRIEND_REQUEST':
+    case 'ACCEPT_FRIEND_REQUEST':
+    case 'FOLLOW_USER':
+    case 'UNFOLLOW_USER':
+      // These would typically interact with a backend API
+      // For now, just return the state unchanged
+      return state;
+    
     default:
       return state;
   }
@@ -166,20 +228,27 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export function AppProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(appReducer, initialState);
   
-  const addPost = (content: string, image?: string) => {
-    dispatch({ type: 'ADD_POST', payload: { content, image } });
+  const addPost = (content: string, isHtml: boolean, image?: string, video?: string, mentions?: string[], tags?: string[]) => {
+    dispatch({ 
+      type: 'ADD_POST', 
+      payload: { content, isHtml, image, video, mentions, tags } 
+    });
   };
   
   const addStory = (image: string) => {
     dispatch({ type: 'ADD_STORY', payload: { image } });
   };
   
-  const toggleLike = (postId: string) => {
-    dispatch({ type: 'TOGGLE_LIKE', payload: { postId } });
+  const addReaction = (postId: string, reactionType: ReactionType) => {
+    dispatch({ type: 'ADD_REACTION', payload: { postId, reactionType } });
   };
   
-  const addComment = (postId: string, content: string) => {
-    dispatch({ type: 'ADD_COMMENT', payload: { postId, content } });
+  const removeReaction = (postId: string, reactionType: ReactionType) => {
+    dispatch({ type: 'REMOVE_REACTION', payload: { postId, reactionType } });
+  };
+  
+  const addComment = (postId: string, content: string, image?: string, video?: string) => {
+    dispatch({ type: 'ADD_COMMENT', payload: { postId, content, image, video } });
   };
   
   const likeComment = (postId: string, commentId: string) => {
@@ -190,14 +259,56 @@ export function AppProvider({ children }: { children: ReactNode }) {
     dispatch({ type: 'SHARE_POST', payload: { postId } });
   };
   
+  const sendFriendRequest = async (userId: string) => {
+    // Simulate API call
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        dispatch({ type: 'SEND_FRIEND_REQUEST', payload: { userId } });
+        resolve(true);
+      }, 1000);
+    });
+  };
+  
+  const acceptFriendRequest = async (requestId: string) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        dispatch({ type: 'ACCEPT_FRIEND_REQUEST', payload: { requestId } });
+        resolve(true);
+      }, 1000);
+    });
+  };
+  
+  const followUser = async (userId: string) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        dispatch({ type: 'FOLLOW_USER', payload: { userId } });
+        resolve(true);
+      }, 1000);
+    });
+  };
+  
+  const unfollowUser = async (userId: string) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        dispatch({ type: 'UNFOLLOW_USER', payload: { userId } });
+        resolve(true);
+      }, 1000);
+    });
+  };
+  
   const value: AppContextType = {
     state,
     addPost,
     addStory,
-    toggleLike,
+    addReaction,
+    removeReaction,
     addComment,
     likeComment,
-    sharePost
+    sharePost,
+    sendFriendRequest,
+    acceptFriendRequest,
+    followUser,
+    unfollowUser
   };
   
   return (
