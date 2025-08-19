@@ -53,12 +53,25 @@ export interface AppState {
   stories: Story[];
 }
 
+export interface FriendRequest {
+  id: string;
+  from: User;
+  to: User;
+  status: 'pending' | 'accepted' | 'rejected';
+  timeAgo: string;
+}
+
 export interface AppContextType {
   state: AppState;
-  addPost: (content: string, image?: string) => void;
+  addPost: (content: string, isHtml: boolean, image?: string, video?: string, mentions?: string[], tags?: string[]) => void;
   addStory: (image: string) => void;
-  toggleLike: (postId: string) => void;
-  addComment: (postId: string, content: string) => void;
+  addReaction: (postId: string, reactionType: ReactionType) => void;
+  removeReaction: (postId: string, reactionType: ReactionType) => void;
+  addComment: (postId: string, content: string, image?: string, video?: string) => void;
   likeComment: (postId: string, commentId: string) => void;
   sharePost: (postId: string) => void;
+  sendFriendRequest: (userId: string) => void;
+  acceptFriendRequest: (requestId: string) => void;
+  followUser: (userId: string) => void;
+  unfollowUser: (userId: string) => void;
 }
