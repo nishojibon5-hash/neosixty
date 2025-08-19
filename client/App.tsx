@@ -5,6 +5,7 @@ import { RightSidebar } from "./components/RightSidebar";
 import { AppProvider } from "./context/AppContext";
 import { Toaster } from "sonner";
 import Index from "./pages/Index";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
 function App() {
