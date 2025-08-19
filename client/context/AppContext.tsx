@@ -248,6 +248,26 @@ function appReducer(state: AppState, action: Action): AppState {
       };
     }
     
+    case 'UPDATE_USER_PROFILE': {
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          profile: action.payload.profile
+        }
+      };
+    }
+
+    case 'UPDATE_USER_AVATAR': {
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          avatar: action.payload.avatar
+        }
+      };
+    }
+
     case 'SEND_FRIEND_REQUEST':
     case 'ACCEPT_FRIEND_REQUEST':
     case 'FOLLOW_USER':
@@ -255,7 +275,7 @@ function appReducer(state: AppState, action: Action): AppState {
       // These would typically interact with a backend API
       // For now, just return the state unchanged
       return state;
-    
+
     default:
       return state;
   }
