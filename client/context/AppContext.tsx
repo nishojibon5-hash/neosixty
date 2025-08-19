@@ -353,7 +353,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
       }, 1000);
     });
   };
-  
+
+  const updateUserProfile = (profile: UserProfile) => {
+    dispatch({ type: 'UPDATE_USER_PROFILE', payload: { profile } });
+  };
+
+  const updateUserAvatar = (avatar: string) => {
+    dispatch({ type: 'UPDATE_USER_AVATAR', payload: { avatar } });
+  };
+
   const value: AppContextType = {
     state,
     addPost,
@@ -366,7 +374,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
     sendFriendRequest,
     acceptFriendRequest,
     followUser,
-    unfollowUser
+    unfollowUser,
+    updateUserProfile,
+    updateUserAvatar
   };
   
   return (
