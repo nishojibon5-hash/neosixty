@@ -5,24 +5,38 @@ export interface User {
   username: string;
 }
 
+export type ReactionType = 'like' | 'love' | 'haha' | 'wow' | 'angry' | 'sad';
+
+export interface Reaction {
+  type: ReactionType;
+  count: number;
+  users: string[]; // user IDs who reacted
+}
+
 export interface Comment {
   id: string;
   author: User;
   content: string;
+  image?: string;
+  video?: string;
   timeAgo: string;
   likes: number;
+  replies?: Comment[];
 }
 
 export interface Post {
   id: string;
   author: User;
   content: string;
+  isHtml: boolean;
   image?: string;
+  video?: string;
   timeAgo: string;
-  likes: number;
+  reactions: Record<ReactionType, Reaction>;
   comments: Comment[];
   shares: number;
-  isLiked: boolean;
+  mentions?: string[]; // user IDs mentioned
+  tags?: string[]; // hashtags
 }
 
 export interface Story {
