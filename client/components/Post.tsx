@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Input } from "./ui/input";
 import { Separator } from "./ui/separator";
+import { ShareDialog } from "./ShareDialog";
 import { useState } from "react";
 import { useApp } from "../context/AppContext";
 import { Post as PostType } from "@shared/types";
