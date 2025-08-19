@@ -5,7 +5,43 @@ const currentUser: User = {
   id: 'current-user',
   name: 'Md Salman',
   avatar: '/placeholder.svg',
-  username: 'md.salman'
+  username: 'md.salman',
+  profile: {
+    bio: "Passionate software developer who loves building amazing user experiences with React and TypeScript.",
+    work: [
+      {
+        id: '1',
+        company: 'Builder.io',
+        position: 'Software Developer',
+        startDate: 'January 2023',
+        location: 'Dhaka, Bangladesh',
+        description: 'Building the future of visual development'
+      }
+    ],
+    education: [
+      {
+        id: '1',
+        school: 'University of Dhaka',
+        degree: "Bachelor's degree",
+        fieldOfStudy: 'Computer Science',
+        startYear: '2018',
+        endYear: '2022'
+      }
+    ],
+    location: 'Dhaka, Bangladesh',
+    email: 'salman@example.com',
+    phoneNumber: '+88 01700 000000',
+    website: 'www.mdsalman.dev',
+    birthday: 'January 15, 1998',
+    relationshipStatus: 'Single',
+    socialLinks: {
+      facebook: 'https://facebook.com/md.salman',
+      twitter: 'https://twitter.com/md_salman',
+      linkedin: 'https://linkedin.com/in/md-salman'
+    },
+    interests: ['Programming', 'Web Development', 'Technology', 'Reading'],
+    languages: ['Bengali', 'English', 'Hindi']
+  }
 };
 
 const initialStories: Story[] = [
