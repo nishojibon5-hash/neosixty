@@ -8,7 +8,6 @@ export interface User {
 export type ReactionType = 'like' | 'love' | 'haha' | 'wow' | 'angry' | 'sad';
 
 export interface Reaction {
-  type: ReactionType;
   count: number;
   users: string[]; // user IDs who reacted
 }
