@@ -53,10 +53,12 @@ export function Header() {
             <Bell className="h-5 w-5" />
           </Button>
           
-          <Avatar className="h-8 w-8 cursor-pointer">
-            <AvatarImage src="/placeholder.svg" />
-            <AvatarFallback>MS</AvatarFallback>
-          </Avatar>
+          <Link to="/profile">
+            <Avatar className="h-8 w-8 cursor-pointer hover:ring-2 hover:ring-primary transition-all">
+              <AvatarImage src="/placeholder.svg" />
+              <AvatarFallback>MS</AvatarFallback>
+            </Avatar>
+          </Link>
         </div>
       </div>
     </header>
