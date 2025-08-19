@@ -21,6 +21,7 @@ export function Post({ post }: PostProps) {
   const [showComments, setShowComments] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [isLiking, setIsLiking] = useState(false);
+  const [showShareDialog, setShowShareDialog] = useState(false);
 
   const handleLike = async () => {
     setIsLiking(true);
