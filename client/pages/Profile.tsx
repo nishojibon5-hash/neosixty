@@ -78,13 +78,26 @@ export default function Profile() {
       const reader = new FileReader();
       reader.onload = (e) => {
         const newAvatar = e.target?.result as string;
-        setProfilePicture(newAvatar);
-        updateUserAvatar(newAvatar);
-        setIsEditingProfile(false);
-        toast.success("Profile picture updated!");
+        setPendingProfilePicture(newAvatar);
+        setIsEditingProfile(true);
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const saveProfilePicture = () => {
+    if (pendingProfilePicture) {
+      setProfilePicture(pendingProfilePicture);
+      updateUserAvatar(pendingProfilePicture);
+      setPendingProfilePicture("");
+      setIsEditingProfile(false);
+      toast.success("Profile picture saved!");
+    }
+  };
+
+  const cancelProfilePicture = () => {
+    setPendingProfilePicture("");
+    setIsEditingProfile(false);
   };
 
   const saveBio = () => {
