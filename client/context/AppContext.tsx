@@ -129,7 +129,7 @@ const initialPosts: Post[] = [
       name: 'Sarah Ali',
       avatar: '/placeholder.svg',
       username: 'sarah.ali',
-      followerCount: 850,
+      followerCount: 1200,
       followingCount: 920,
       isVerified: false
     },
