@@ -179,7 +179,18 @@ export default function Profile() {
                   className="mt-2"
                 />
               </div>
-              <ProfileEditDialog />
+              <div className="flex gap-2">
+                <ProfileEditDialog />
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => updateFollowerCount(state.currentUser.id, true)}
+                  className="flex items-center gap-2"
+                >
+                  <span>+</span>
+                  Add Follower (Test)
+                </Button>
+              </div>
             </div>
 
             {/* Bio Section */}
