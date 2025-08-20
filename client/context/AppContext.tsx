@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useReducer, ReactNode } from 'react';
 import { AppState, AppContextType, Post, Story, Comment, User, ReactionType, FriendRequest, UserProfile } from '@shared/types';
+import { toast } from 'sonner';
 
 const currentUser: User = {
   id: 'current-user',
