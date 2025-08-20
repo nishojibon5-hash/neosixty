@@ -12,13 +12,15 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
       <div className="container flex h-16 items-center justify-between px-4">
-        {/* Left: Logo and Search */}
+        {/* Left: Logo, BackButton, HomeMenu and Search */}
         <div className="flex items-center gap-4 flex-1 max-w-md">
           <LogoWithText className="hidden sm:flex" />
           <div className="sm:hidden">
-            <Button variant="ghost" size="icon">
-              <Menu className="h-5 w-5" />
-            </Button>
+            <HomeMenu />
+          </div>
+          <BackButton className="hidden sm:flex" />
+          <div className="hidden md:block">
+            <HomeMenu />
           </div>
           
           <div className="relative flex-1 max-w-xs">
