@@ -6,6 +6,9 @@ const currentUser: User = {
   name: 'Md Salman',
   avatar: '/placeholder.svg',
   username: 'md.salman',
+  followerCount: 1250,
+  followingCount: 890,
+  isVerified: true,
   profile: {
     bio: "Passionate software developer who loves building amazing user experiences with React and TypeScript.",
     work: [
