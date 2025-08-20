@@ -17,7 +17,7 @@ import { WorkInfo, EducationInfo, UserProfile } from "@shared/types";
 import { toast } from "sonner";
 
 export default function Profile() {
-  const { state, updateUserProfile } = useApp();
+  const { state, updateUserProfile, updateUserAvatar } = useApp();
   const [isEditingCover, setIsEditingCover] = useState(false);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [isEditingBio, setIsEditingBio] = useState(false);
