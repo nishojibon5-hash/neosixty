@@ -193,14 +193,33 @@ export default function Profile() {
       <div className="relative -mt-20 px-6">
         <div className="flex flex-col md:flex-row gap-6 items-start">
           {/* Profile Picture */}
-          <div className="relative group cursor-pointer" onClick={() => profileInputRef.current?.click()}>
-            <Avatar className="h-40 w-40 border-4 border-white shadow-lg">
-              <AvatarImage src={profilePicture} />
-              <AvatarFallback className="text-4xl">{state.currentUser.name.slice(0, 2).toUpperCase()}</AvatarFallback>
-            </Avatar>
-            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-full flex items-center justify-center">
-              <Camera className="h-8 w-8 text-white" />
+          <div className="relative">
+            <div
+              className="relative group cursor-pointer"
+              onClick={() => !isEditingProfile && profileInputRef.current?.click()}
+            >
+              <Avatar className="h-40 w-40 border-4 border-white shadow-lg">
+                <AvatarImage src={pendingProfilePicture || profilePicture} />
+                <AvatarFallback className="text-4xl">{state.currentUser.name.slice(0, 2).toUpperCase()}</AvatarFallback>
+              </Avatar>
+              {!isEditingProfile && (
+                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-full flex items-center justify-center">
+                  <Camera className="h-8 w-8 text-white" />
+                </div>
+              )}
             </div>
+
+            {/* Save/Cancel buttons for profile picture */}
+            {isEditingProfile && pendingProfilePicture && (
+              <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 flex gap-2">
+                <Button size="sm" variant="outline" onClick={cancelProfilePicture}>
+                  Cancel
+                </Button>
+                <Button size="sm" onClick={saveProfilePicture}>
+                  Save
+                </Button>
+              </div>
+            )}
           </div>
 
           <input
