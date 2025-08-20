@@ -123,7 +123,15 @@ const initialPosts: Post[] = [
   },
   {
     id: 'post-2',
-    author: { id: 'sarah', name: 'Sarah Ali', avatar: '/placeholder.svg', username: 'sarah.ali' },
+    author: {
+      id: 'sarah',
+      name: 'Sarah Ali',
+      avatar: '/placeholder.svg',
+      username: 'sarah.ali',
+      followerCount: 850,
+      followingCount: 920,
+      isVerified: false
+    },
     content: '<div style="padding: 20px; background: linear-gradient(45deg, #ff6b6b, #4ecdc4); border-radius: 10px; color: white; text-align: center;"><h2>🌅 Beautiful Sunset</h2><p>Sometimes we need to pause and appreciate the simple moments in life.</p><p><strong>What made you smile today?</strong></p></div>',
     isHtml: true,
     image: '/placeholder.svg',
