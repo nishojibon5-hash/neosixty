@@ -7,7 +7,7 @@ interface GreenBadgeProps {
 }
 
 export function GreenBadge({ followerCount, size = "md", className }: GreenBadgeProps) {
-  // Show green badge for 1k+ followers but less than verified threshold
+  // Show green badge for 1k+ followers
   if (followerCount < 1000) return null;
 
   const sizeClasses = {
@@ -19,55 +19,86 @@ export function GreenBadge({ followerCount, size = "md", className }: GreenBadge
   return (
     <div 
       className={cn(
-        "flex items-center justify-center relative",
+        "flex items-center justify-center relative flex-shrink-0",
         sizeClasses[size],
         className
       )}
       title={`${followerCount >= 1000 ? '1K+' : followerCount} followers`}
     >
-      {/* Green Star Badge Background */}
-      <svg 
-        viewBox="0 0 100 100" 
-        className="w-full h-full"
-        style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.1))' }}
-      >
-        {/* Star burst shape */}
-        <path
-          d="M50 5 L55 25 L75 15 L65 35 L85 40 L65 50 L85 60 L65 65 L75 85 L55 75 L50 95 L45 75 L25 85 L35 65 L15 60 L35 50 L15 40 L35 35 L25 15 L45 25 Z"
-          fill="#22c55e"
-          stroke="#16a34a"
-          strokeWidth="1"
-        />
-        
-        {/* 60 Text */}
-        <text
-          x="50"
-          y="50"
-          textAnchor="middle"
-          dominantBaseline="central"
-          fill="#065f46"
-          fontSize="24"
-          fontWeight="bold"
-          fontFamily="system-ui, -apple-system, sans-serif"
+      {/* Perfect Circle Background with Star Burst */}
+      <div className="relative w-full h-full">
+        <svg 
+          viewBox="0 0 48 48" 
+          className="w-full h-full"
+          style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.15))' }}
         >
-          60
-        </text>
-        
-        {/* Underline */}
-        <line
-          x1="35"
-          y1="60"
-          x2="65"
-          y2="60"
-          stroke="#065f46"
-          strokeWidth="2"
-        />
-      </svg>
+          {/* Outer Circle */}
+          <circle
+            cx="24"
+            cy="24"
+            r="23"
+            fill="#22c55e"
+            stroke="#16a34a"
+            strokeWidth="1"
+          />
+          
+          {/* Inner Shadow Circle */}
+          <circle
+            cx="24"
+            cy="24"
+            r="20"
+            fill="#16a34a"
+            opacity="0.3"
+          />
+          
+          {/* Main Content Circle */}
+          <circle
+            cx="24"
+            cy="24"
+            r="18"
+            fill="#22c55e"
+          />
+          
+          {/* 60 Text */}
+          <text
+            x="24"
+            y="24"
+            textAnchor="middle"
+            dominantBaseline="central"
+            fill="#ffffff"
+            fontSize="12"
+            fontWeight="bold"
+            fontFamily="system-ui, -apple-system, sans-serif"
+          >
+            60
+          </text>
+          
+          {/* Underline */}
+          <line
+            x1="18"
+            y1="28"
+            x2="30"
+            y2="28"
+            stroke="#ffffff"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+          
+          {/* Small highlight for depth */}
+          <circle
+            cx="20"
+            cy="18"
+            r="2"
+            fill="#34d399"
+            opacity="0.6"
+          />
+        </svg>
+      </div>
     </div>
   );
 }
 
 // Function to check if user should have green badge
-export function shouldHaveGreenBadge(followerCount: number, isVerified: boolean): boolean {
-  return followerCount >= 1000 && !isVerified;
+export function shouldHaveGreenBadge(followerCount: number): boolean {
+  return followerCount >= 1000;
 }
