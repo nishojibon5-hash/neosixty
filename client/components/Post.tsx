@@ -251,6 +251,7 @@ export function Post({ post }: PostProps) {
                     <div className="flex items-center gap-1 mb-1">
                       <h4 className="font-medium text-sm">{comment.author.name}</h4>
                       <VerificationBadge isVerified={comment.author.isVerified} size="sm" />
+                      <GreenBadge followerCount={comment.author.followerCount} size="sm" />
                     </div>
                     <p className="text-sm">{comment.content}</p>
                     {comment.image && (
