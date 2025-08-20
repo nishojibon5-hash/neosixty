@@ -8,6 +8,7 @@ import { Textarea } from "./ui/textarea";
 import { ShareDialog } from "./ShareDialog";
 import { ReactionsBar, ReactionsDisplay } from "./ReactionsBar";
 import { VerificationBadge } from "./VerificationBadge";
+import { GreenBadge } from "./GreenBadge";
 import { useState } from "react";
 import { useApp } from "../context/AppContext";
 import { Post as PostType, ReactionType } from "@shared/types";
