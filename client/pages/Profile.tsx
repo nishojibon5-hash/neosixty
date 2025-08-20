@@ -24,7 +24,9 @@ export default function Profile() {
   const [isEditingCover, setIsEditingCover] = useState(false);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [isEditingBio, setIsEditingBio] = useState(false);
-  
+  const [pendingCoverPhoto, setPendingCoverPhoto] = useState<string>("");
+  const [pendingProfilePicture, setPendingProfilePicture] = useState<string>("");
+
   // Get current profile or create default
   const currentProfile = state.currentUser.profile || {
     work: [],
