@@ -7,12 +7,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs"
 import { useApp } from "../context/AppContext";
 import { Post } from "../components/Post";
 import { CreatePost } from "../components/CreatePost";
-import { 
-  EditableWorkSection, 
-  EditableEducationSection, 
-  EditableContactInfo, 
-  EditableBasicInfo 
+import {
+  EditableWorkSection,
+  EditableEducationSection,
+  EditableContactInfo,
+  EditableBasicInfo
 } from "../components/EditableProfileSection";
+import { ProfileEditDialog } from "../components/ProfileEditDialog";
 import { WorkInfo, EducationInfo, UserProfile } from "@shared/types";
 import { toast } from "sonner";
 
