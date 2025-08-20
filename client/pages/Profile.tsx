@@ -15,6 +15,7 @@ import {
 } from "../components/EditableProfileSection";
 import { ProfileEditDialog } from "../components/ProfileEditDialog";
 import { VerificationBadge, FollowerStats } from "../components/VerificationBadge";
+import { GreenBadge } from "../components/GreenBadge";
 import { WorkInfo, EducationInfo, UserProfile } from "@shared/types";
 import { toast } from "sonner";
 
