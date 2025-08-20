@@ -44,6 +44,9 @@ export interface User {
   avatar: string;
   username: string;
   profile?: UserProfile;
+  followerCount: number;
+  followingCount: number;
+  isVerified: boolean;
 }
 
 export type ReactionType = 'like' | 'love' | 'haha' | 'wow' | 'angry' | 'sad';
