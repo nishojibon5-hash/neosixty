@@ -8,13 +8,15 @@ export function Sidebar() {
   return (
     <aside className="hidden lg:block w-80 h-[calc(100vh-4rem)] overflow-y-auto p-4 space-y-2">
       {/* User Profile */}
-      <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-muted/50">
-        <Avatar className="h-9 w-9">
-          <AvatarImage src="/placeholder.svg" />
-          <AvatarFallback>MS</AvatarFallback>
-        </Avatar>
-        <span className="ml-3 font-medium">Md Salman</span>
-      </Button>
+      <Link to="/profile">
+        <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-muted/50">
+          <Avatar className="h-9 w-9">
+            <AvatarImage src="/placeholder.svg" />
+            <AvatarFallback>MS</AvatarFallback>
+          </Avatar>
+          <span className="ml-3 font-medium">Md Salman</span>
+        </Button>
+      </Link>
 
       {/* Main Menu Items */}
       <div className="space-y-1">
