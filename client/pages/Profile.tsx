@@ -168,9 +168,16 @@ export default function Profile() {
           <div className="flex-1 bg-white p-6 rounded-lg shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h1 className="text-3xl font-bold">{state.currentUser.name}</h1>
+                <div className="flex items-center gap-2">
+                  <h1 className="text-3xl font-bold">{state.currentUser.name}</h1>
+                  <VerificationBadge isVerified={state.currentUser.isVerified} size="lg" />
+                </div>
                 <p className="text-muted-foreground">@{state.currentUser.username}</p>
-                <p className="text-sm text-muted-foreground mt-1">1.2K friends • 890 followers</p>
+                <FollowerStats
+                  followerCount={state.currentUser.followerCount}
+                  followingCount={state.currentUser.followingCount}
+                  className="mt-2"
+                />
               </div>
               <ProfileEditDialog />
             </div>
