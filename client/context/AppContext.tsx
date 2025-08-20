@@ -459,6 +459,29 @@ export function AppProvider({ children }: { children: ReactNode }) {
     dispatch({ type: 'UPDATE_USER_AVATAR', payload: { avatar } });
   };
 
+  const updateFollowerCount = (userId: string, increment: boolean) => {
+    dispatch({ type: 'UPDATE_FOLLOWER_COUNT', payload: { userId, increment } });
+
+    // Check if user should be verified after follower count update
+    setTimeout(() => {
+      checkAndUpdateVerification(userId);
+    }, 100);
+  };
+
+  const checkAndUpdateVerification = (userId: string) => {
+    const user = state.currentUser.id === userId
+      ? state.currentUser
+      : state.posts.find(p => p.author.id === userId)?.author ||
+        state.stories.find(s => s.author.id === userId)?.author;
+
+    if (user && user.followerCount >= 1000 && !user.isVerified) {
+      dispatch({ type: 'UPDATE_VERIFICATION', payload: { userId, isVerified: true } });
+      if (userId === state.currentUser.id) {
+        toast.success("Congratulations! You've been verified with a blue badge!");
+      }
+    }
+  };
+
   const value: AppContextType = {
     state,
     addPost,
@@ -473,7 +496,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
     followUser,
     unfollowUser,
     updateUserProfile,
-    updateUserAvatar
+    updateUserAvatar,
+    updateFollowerCount,
+    checkAndUpdateVerification
   };
   
   return (
