@@ -4,6 +4,8 @@ import { Card, CardContent } from "./ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { VerificationBadge } from "./VerificationBadge";
+import { GreenBadge } from "./GreenBadge";
 import { useState, useRef } from "react";
 import { useApp } from "../context/AppContext";
 
