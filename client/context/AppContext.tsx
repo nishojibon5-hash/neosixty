@@ -50,14 +50,30 @@ const currentUser: User = {
 const initialStories: Story[] = [
   {
     id: 'story-1',
-    author: { id: 'ahmed', name: 'Ahmed Khan', avatar: '/placeholder.svg', username: 'ahmed.khan' },
+    author: {
+      id: 'ahmed',
+      name: 'Ahmed Khan',
+      avatar: '/placeholder.svg',
+      username: 'ahmed.khan',
+      followerCount: 2500,
+      followingCount: 340,
+      isVerified: true
+    },
     image: '/placeholder.svg',
     timeAgo: '2 hours ago',
     isViewed: false
   },
   {
-    id: 'story-2', 
-    author: { id: 'sarah', name: 'Sarah Ali', avatar: '/placeholder.svg', username: 'sarah.ali' },
+    id: 'story-2',
+    author: {
+      id: 'sarah',
+      name: 'Sarah Ali',
+      avatar: '/placeholder.svg',
+      username: 'sarah.ali',
+      followerCount: 850,
+      followingCount: 920,
+      isVerified: false
+    },
     image: '/placeholder.svg',
     timeAgo: '4 hours ago',
     isViewed: false
