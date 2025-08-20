@@ -15,7 +15,15 @@ const friendSuggestions = [
 const friendRequests = [
   {
     id: 'req1',
-    from: { id: 'user4', name: 'Ayesha Rahman', avatar: '/placeholder.svg', username: 'ayesha.r' },
+    from: {
+      id: 'user4',
+      name: 'Ayesha Rahman',
+      avatar: '/placeholder.svg',
+      username: 'ayesha.r',
+      followerCount: 450,
+      followingCount: 320,
+      isVerified: false
+    },
     timeAgo: '2 hours ago'
   }
 ];
