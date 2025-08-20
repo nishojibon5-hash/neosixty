@@ -236,7 +236,6 @@ export default function Profile() {
               <div>
                 <div className="flex items-center gap-2">
                   <h1 className="text-3xl font-bold">{state.currentUser.name}</h1>
-                  <VerificationBadge isVerified={state.currentUser.isVerified} size="lg" />
                   <GreenBadge followerCount={state.currentUser.followerCount} size="lg" />
                 </div>
                 <p className="text-muted-foreground">@{state.currentUser.username}</p>
