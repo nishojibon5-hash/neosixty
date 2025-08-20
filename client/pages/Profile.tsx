@@ -61,8 +61,7 @@ export default function Profile() {
       reader.onload = (e) => {
         const newAvatar = e.target?.result as string;
         setProfilePicture(newAvatar);
-        // Update both avatar and profile
-        updateUserProfile(currentProfile);
+        updateUserAvatar(newAvatar);
         setIsEditingProfile(false);
         toast.success("Profile picture updated!");
       };
