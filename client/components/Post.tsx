@@ -246,7 +246,10 @@ export function Post({ post }: PostProps) {
                 </Avatar>
                 <div className="flex-1">
                   <div className="bg-muted p-3 rounded-lg">
-                    <h4 className="font-medium text-sm">{comment.author.name}</h4>
+                    <div className="flex items-center gap-1 mb-1">
+                      <h4 className="font-medium text-sm">{comment.author.name}</h4>
+                      <VerificationBadge isVerified={comment.author.isVerified} size="sm" />
+                    </div>
                     <p className="text-sm">{comment.content}</p>
                     {comment.image && (
                       <img 
