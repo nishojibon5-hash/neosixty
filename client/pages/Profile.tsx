@@ -140,12 +140,16 @@ export default function Profile() {
     <div className="max-w-4xl mx-auto">
       {/* Cover Photo Section */}
       <div className="relative">
-        <div 
+        <div
           className="h-80 bg-gradient-to-br from-blue-400 to-purple-600 rounded-lg overflow-hidden relative group cursor-pointer"
-          style={coverPhoto ? { backgroundImage: `url(${coverPhoto})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
-          onClick={() => coverInputRef.current?.click()}
+          style={(pendingCoverPhoto || coverPhoto) ? {
+            backgroundImage: `url(${pendingCoverPhoto || coverPhoto})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+          } : {}}
+          onClick={() => !isEditingCover && coverInputRef.current?.click()}
         >
-          {!coverPhoto && (
+          {!(pendingCoverPhoto || coverPhoto) && (
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center text-white">
                 <Camera className="h-12 w-12 mx-auto mb-2 opacity-70" />
@@ -153,13 +157,27 @@ export default function Profile() {
               </div>
             </div>
           )}
-          
-          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-            <Button className="flex items-center gap-2">
-              <Camera className="h-4 w-4" />
-              {coverPhoto ? 'Change Cover Photo' : 'Add Cover Photo'}
-            </Button>
-          </div>
+
+          {!isEditingCover && (
+            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <Button className="flex items-center gap-2">
+                <Camera className="h-4 w-4" />
+                {(pendingCoverPhoto || coverPhoto) ? 'Change Cover Photo' : 'Add Cover Photo'}
+              </Button>
+            </div>
+          )}
+
+          {/* Save/Cancel buttons for cover photo */}
+          {isEditingCover && pendingCoverPhoto && (
+            <div className="absolute bottom-4 right-4 flex gap-2">
+              <Button variant="outline" onClick={cancelCoverPhoto}>
+                Cancel
+              </Button>
+              <Button onClick={saveCoverPhoto}>
+                Save Cover Photo
+              </Button>
+            </div>
+          )}
         </div>
 
         <input
