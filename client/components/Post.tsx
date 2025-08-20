@@ -97,6 +97,7 @@ export function Post({ post }: PostProps) {
               <div className="flex items-center gap-2">
                 <h3 className="font-semibold">{post.author.name}</h3>
                 <VerificationBadge isVerified={post.author.isVerified} />
+                <GreenBadge followerCount={post.author.followerCount} />
               </div>
               <p className="text-sm text-muted-foreground">{post.timeAgo}</p>
             </div>
