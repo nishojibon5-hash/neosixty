@@ -4,6 +4,8 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Link } from "react-router-dom";
+import { HomeMenu } from "./HomeMenu";
+import { BackButton } from "./BackButton";
 import { cn } from "@/lib/utils";
 
 export function Header() {
