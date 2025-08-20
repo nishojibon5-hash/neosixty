@@ -171,10 +171,7 @@ export default function Profile() {
                 <p className="text-muted-foreground">@{state.currentUser.username}</p>
                 <p className="text-sm text-muted-foreground mt-1">1.2K friends • 890 followers</p>
               </div>
-              <Button size="sm" className="flex items-center gap-2">
-                <Edit3 className="h-4 w-4" />
-                Edit Profile
-              </Button>
+              <ProfileEditDialog />
             </div>
 
             {/* Bio Section */}
