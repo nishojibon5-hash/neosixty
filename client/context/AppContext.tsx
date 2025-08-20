@@ -305,6 +305,66 @@ function appReducer(state: AppState, action: Action): AppState {
       };
     }
 
+    case 'UPDATE_FOLLOWER_COUNT': {
+      const updateUser = (user: User) => {
+        if (user.id === action.payload.userId) {
+          return {
+            ...user,
+            followerCount: action.payload.increment
+              ? user.followerCount + 1
+              : Math.max(0, user.followerCount - 1)
+          };
+        }
+        return user;
+      };
+
+      return {
+        ...state,
+        currentUser: updateUser(state.currentUser),
+        posts: state.posts.map(post => ({
+          ...post,
+          author: updateUser(post.author),
+          comments: post.comments.map(comment => ({
+            ...comment,
+            author: updateUser(comment.author)
+          }))
+        })),
+        stories: state.stories.map(story => ({
+          ...story,
+          author: updateUser(story.author)
+        }))
+      };
+    }
+
+    case 'UPDATE_VERIFICATION': {
+      const updateUserVerification = (user: User) => {
+        if (user.id === action.payload.userId) {
+          return {
+            ...user,
+            isVerified: action.payload.isVerified
+          };
+        }
+        return user;
+      };
+
+      return {
+        ...state,
+        currentUser: updateUserVerification(state.currentUser),
+        posts: state.posts.map(post => ({
+          ...post,
+          author: updateUserVerification(post.author),
+          comments: post.comments.map(comment => ({
+            ...comment,
+            author: updateUserVerification(comment.author)
+          }))
+        })),
+        stories: state.stories.map(story => ({
+          ...story,
+          author: updateUserVerification(story.author)
+        }))
+      };
+    }
+
     case 'SEND_FRIEND_REQUEST':
     case 'ACCEPT_FRIEND_REQUEST':
     case 'FOLLOW_USER':
