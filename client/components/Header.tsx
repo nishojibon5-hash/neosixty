@@ -30,9 +30,11 @@ export function Header() {
 
         {/* Center: Navigation */}
         <nav className="hidden md:flex items-center space-x-1">
-          <Button variant="ghost" size="lg" className="text-muted-foreground hover:text-primary">
-            <Home className="h-6 w-6" />
-          </Button>
+          <Link to="/">
+            <Button variant="ghost" size="lg" className="text-muted-foreground hover:text-primary">
+              <Home className="h-6 w-6" />
+            </Button>
+          </Link>
           <Button variant="ghost" size="lg" className="text-muted-foreground hover:text-primary">
             <Users className="h-6 w-6" />
           </Button>
