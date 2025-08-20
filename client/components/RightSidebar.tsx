@@ -7,9 +7,33 @@ import { UserProfile, FriendRequestCard } from "./UserProfile";
 import { useApp } from "../context/AppContext";
 
 const friendSuggestions = [
-  { id: 'user1', name: 'Rahman Ahmed', avatar: '/placeholder.svg', username: 'rahman.ahmed' },
-  { id: 'user2', name: 'Fatima Khan', avatar: '/placeholder.svg', username: 'fatima.khan' },
-  { id: 'user3', name: 'Hassan Ali', avatar: '/placeholder.svg', username: 'hassan.ali' }
+  {
+    id: 'user1',
+    name: 'Rahman Ahmed',
+    avatar: '/placeholder.svg',
+    username: 'rahman.ahmed',
+    followerCount: 1200,
+    followingCount: 890,
+    isVerified: true
+  },
+  {
+    id: 'user2',
+    name: 'Fatima Khan',
+    avatar: '/placeholder.svg',
+    username: 'fatima.khan',
+    followerCount: 650,
+    followingCount: 420,
+    isVerified: false
+  },
+  {
+    id: 'user3',
+    name: 'Hassan Ali',
+    avatar: '/placeholder.svg',
+    username: 'hassan.ali',
+    followerCount: 2800,
+    followingCount: 150,
+    isVerified: true
+  }
 ];
 
 const friendRequests = [
