@@ -50,13 +50,26 @@ export default function Profile() {
       const reader = new FileReader();
       reader.onload = (e) => {
         const newCoverPhoto = e.target?.result as string;
-        setCoverPhoto(newCoverPhoto);
-        updateUserProfile({ ...currentProfile, coverPhoto: newCoverPhoto });
-        setIsEditingCover(false);
-        toast.success("Cover photo updated!");
+        setPendingCoverPhoto(newCoverPhoto);
+        setIsEditingCover(true);
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const saveCoverPhoto = () => {
+    if (pendingCoverPhoto) {
+      setCoverPhoto(pendingCoverPhoto);
+      updateUserProfile({ ...currentProfile, coverPhoto: pendingCoverPhoto });
+      setPendingCoverPhoto("");
+      setIsEditingCover(false);
+      toast.success("Cover photo saved!");
+    }
+  };
+
+  const cancelCoverPhoto = () => {
+    setPendingCoverPhoto("");
+    setIsEditingCover(false);
   };
 
   const handleProfilePictureChange = (event: React.ChangeEvent<HTMLInputElement>) => {
