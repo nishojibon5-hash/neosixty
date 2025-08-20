@@ -17,14 +17,15 @@ export function VerificationBadge({ isVerified, size = "md", className }: Verifi
   };
 
   return (
-    <CheckCircle 
-      className={cn(
-        "text-blue-500 fill-blue-500 drop-shadow-sm",
-        sizeClasses[size],
-        className
-      )}
-      title="Verified account"
-    />
+    <div title="Verified account">
+      <CheckCircle
+        className={cn(
+          "text-blue-500 fill-blue-500 drop-shadow-sm",
+          sizeClasses[size],
+          className
+        )}
+      />
+    </div>
   );
 }
 
