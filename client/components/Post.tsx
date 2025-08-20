@@ -7,6 +7,7 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { ShareDialog } from "./ShareDialog";
 import { ReactionsBar, ReactionsDisplay } from "./ReactionsBar";
+import { VerificationBadge } from "./VerificationBadge";
 import { useState } from "react";
 import { useApp } from "../context/AppContext";
 import { Post as PostType, ReactionType } from "@shared/types";
