@@ -166,7 +166,9 @@ type Action =
   | { type: 'FOLLOW_USER'; payload: { userId: string } }
   | { type: 'UNFOLLOW_USER'; payload: { userId: string } }
   | { type: 'UPDATE_USER_PROFILE'; payload: { profile: UserProfile } }
-  | { type: 'UPDATE_USER_AVATAR'; payload: { avatar: string } };
+  | { type: 'UPDATE_USER_AVATAR'; payload: { avatar: string } }
+  | { type: 'UPDATE_FOLLOWER_COUNT'; payload: { userId: string; increment: boolean } }
+  | { type: 'UPDATE_VERIFICATION'; payload: { userId: string; isVerified: boolean } };
 
 function appReducer(state: AppState, action: Action): AppState {
   switch (action.type) {
