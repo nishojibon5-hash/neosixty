@@ -93,7 +93,10 @@ export function Post({ post }: PostProps) {
               <AvatarFallback>{post.author.name.slice(0, 2).toUpperCase()}</AvatarFallback>
             </Avatar>
             <div>
-              <h3 className="font-semibold">{post.author.name}</h3>
+              <div className="flex items-center gap-2">
+                <h3 className="font-semibold">{post.author.name}</h3>
+                <VerificationBadge isVerified={post.author.isVerified} />
+              </div>
               <p className="text-sm text-muted-foreground">{post.timeAgo}</p>
             </div>
           </div>
