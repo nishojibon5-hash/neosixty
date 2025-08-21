@@ -251,4 +251,13 @@ export interface AppContextType {
   updateAdminSettings: (settings: Partial<AdminSettings>) => void;
   deletePost: (postId: string) => void;
   deleteComment: (postId: string, commentId: string) => void;
+  // Monetization methods
+  enableProfessionalMode: (userId: string) => Promise<boolean>;
+  createAdCampaign: (campaign: Omit<AdCampaign, 'id' | 'createdAt' | 'impressions' | 'clicks' | 'spent'>) => Promise<string>;
+  processPayment: (payment: Omit<PaymentTransaction, 'id' | 'createdAt'>) => Promise<boolean>;
+  getAdCampaigns: (advertiserId?: string) => AdCampaign[];
+  getUserEarnings: (userId: string) => UserEarnings | null;
+  requestWithdrawal: (userId: string, amount: number, method: PaymentMethod, phone: string) => Promise<boolean>;
+  getActiveAds: () => AdCampaign[];
+  recordAdImpression: (campaignId: string, userId: string, postId?: string, storyId?: string) => void;
 }
