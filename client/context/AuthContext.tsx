@@ -33,7 +33,9 @@ let users: User[] = [
     followingCount: 0,
     isVerified: true,
     createdAt: new Date().toISOString(),
-    isActive: true
+    isActive: true,
+    isProfessional: false,
+    monetizationEnabled: false
   }
 ];
 
@@ -193,7 +195,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = () => {
     dispatch({ type: 'LOGOUT' });
     localStorage.removeItem('neo_sixty_user');
-    toast.success('সফলভাবে লগআউট হয়েছে');
+    toast.success('সফলভাবে লগআ��ট হয়েছে');
   };
 
   const createUser = async (userData: RegisterData & { role: UserRole }): Promise<boolean> => {
