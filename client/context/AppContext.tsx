@@ -3,49 +3,26 @@ import { AppState, AppContextType, Post, Story, Comment, User, ReactionType, Fri
 import { toast } from 'sonner';
 import { useAuth } from './AuthContext';
 
-const currentUser: User = {
-  id: 'current-user',
-  name: 'Md Salman',
+// Default user for initialization - will be replaced with authenticated user
+const defaultUser: User = {
+  id: 'default-user',
+  name: 'Default User',
   avatar: '/placeholder.svg',
-  username: 'md.salman',
-  followerCount: 1250,
-  followingCount: 890,
-  isVerified: true,
+  username: 'default',
+  followerCount: 0,
+  followingCount: 0,
+  isVerified: false,
+  role: 'user',
+  createdAt: new Date().toISOString(),
+  isActive: true,
   profile: {
-    bio: "Passionate software developer who loves building amazing user experiences with React and TypeScript.",
-    work: [
-      {
-        id: '1',
-        company: 'Builder.io',
-        position: 'Software Developer',
-        startDate: 'January 2023',
-        location: 'Dhaka, Bangladesh',
-        description: 'Building the future of visual development'
-      }
-    ],
-    education: [
-      {
-        id: '1',
-        school: 'University of Dhaka',
-        degree: "Bachelor's degree",
-        fieldOfStudy: 'Computer Science',
-        startYear: '2018',
-        endYear: '2022'
-      }
-    ],
-    location: 'Dhaka, Bangladesh',
-    email: 'salman@example.com',
-    phoneNumber: '+88 01700 000000',
-    website: 'www.mdsalman.dev',
-    birthday: 'January 15, 1998',
-    relationshipStatus: 'Single',
-    socialLinks: {
-      facebook: 'https://facebook.com/md.salman',
-      twitter: 'https://twitter.com/md_salman',
-      linkedin: 'https://linkedin.com/in/md-salman'
-    },
-    interests: ['Programming', 'Web Development', 'Technology', 'Reading'],
-    languages: ['Bengali', 'English', 'Hindi']
+    bio: "",
+    work: [],
+    education: [],
+    location: '',
+    interests: [],
+    languages: [],
+    socialLinks: {}
   }
 };
 
