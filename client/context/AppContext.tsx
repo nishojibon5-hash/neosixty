@@ -527,36 +527,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // Get auth context to provide auth methods
-  const authContext = React.useContext(require('./AuthContext').AuthContext) || {
-    authState: { isAuthenticated: false, user: null, isLoading: false },
-    adminSettings: {
-      appName: 'Neo sixty',
-      allowRegistration: true,
-      allowPosts: true,
-      allowStories: true,
-      allowComments: true,
-      allowReactions: true,
-      moderationEnabled: false
-    },
-    login: async () => false,
-    register: async () => false,
-    logout: () => {},
-    createUser: async () => false,
-    updateUser: async () => false,
-    deleteUser: async () => false,
-    getAllUsers: () => [],
-    toggleUserStatus: async () => false,
-    updateAdminSettings: () => {}
-  };
-
   const value: AppContextType = {
     state,
-    authState: authContext.authState,
-    adminSettings: authContext.adminSettings,
-    login: authContext.login,
-    register: authContext.register,
-    logout: authContext.logout,
     addPost,
     addStory,
     addReaction,
@@ -572,14 +544,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
     updateUserAvatar,
     updateFollowerCount,
     checkAndUpdateVerification,
-    createUser: authContext.createUser,
-    updateUser: authContext.updateUser,
-    deleteUser: authContext.deleteUser,
-    getAllUsers: authContext.getAllUsers,
-    toggleUserStatus: authContext.toggleUserStatus,
-    updateAdminSettings: authContext.updateAdminSettings,
     deletePost,
-    deleteComment
+    deleteComment,
+    updateCurrentUser
   };
   
   return (
