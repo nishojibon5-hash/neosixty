@@ -4,6 +4,7 @@ import { Sidebar } from "./components/Sidebar";
 import { RightSidebar } from "./components/RightSidebar";
 import { AppProvider } from "./context/AppContext";
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { ContextIntegration } from "./context/IntegratedContext";
 import { Toaster } from "sonner";
 import Index from "./pages/Index";
 import Profile from "./pages/Profile";
