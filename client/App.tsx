@@ -114,6 +114,26 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/create-ads"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <CreateAds />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/professional"
+        element={
+          <ProtectedRoute>
+            <AppLayout>
+              <ProfessionalDashboard />
+            </AppLayout>
+          </ProtectedRoute>
+        }
+      />
 
       {/* Admin routes */}
       <Route
