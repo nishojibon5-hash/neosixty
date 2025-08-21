@@ -385,6 +385,19 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export function AppProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(appReducer, initialState);
 
+  // Import auth context to sync current user
+  const authContext = useAuth();
+
+  // Update current user when authentication changes
+  React.useEffect(() => {
+    if (authContext.authState.user && authContext.authState.user.id !== state.currentUser.id) {
+      dispatch({
+        type: 'UPDATE_CURRENT_USER',
+        payload: { user: authContext.authState.user }
+      });
+    }
+  }, [authContext.authState.user, state.currentUser.id]);
+
   const addPost = (content: string, isHtml: boolean, image?: string, video?: string, mentions?: string[], tags?: string[]) => {
     dispatch({
       type: 'ADD_POST',
