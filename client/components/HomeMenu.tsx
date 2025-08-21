@@ -79,6 +79,36 @@ export function HomeMenu() {
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
+
+        <DropdownMenuLabel>Business & Creator Tools</DropdownMenuLabel>
+
+        <Link to="/create-ads">
+          <DropdownMenuItem className="flex items-center gap-3 p-3">
+            <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
+              <Target className="h-4 w-4 text-blue-600" />
+            </div>
+            <div>
+              <p className="font-medium">Create Ads</p>
+              <p className="text-xs text-muted-foreground">বিজ্ঞাপন তৈরি করুন</p>
+            </div>
+          </DropdownMenuItem>
+        </Link>
+
+        {user && user.followerCount >= 1000 && (
+          <Link to="/professional">
+            <DropdownMenuItem className="flex items-center gap-3 p-3">
+              <div className="h-8 w-8 rounded-full bg-yellow-100 flex items-center justify-center">
+                <Crown className="h-4 w-4 text-yellow-600" />
+              </div>
+              <div>
+                <p className="font-medium">Professional Dashboard</p>
+                <p className="text-xs text-muted-foreground">মনিটাইজেশন ড্যাশবোর্ড</p>
+              </div>
+            </DropdownMenuItem>
+          </Link>
+        )}
+
+        <DropdownMenuSeparator />
         
         <DropdownMenuLabel>More Tools</DropdownMenuLabel>
 
