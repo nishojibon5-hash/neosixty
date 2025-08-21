@@ -84,6 +84,11 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
   }
 }
 
+// In-memory storage for monetization data
+let adCampaigns: AdCampaign[] = [];
+let paymentTransactions: PaymentTransaction[] = [];
+let userEarnings: Map<string, UserEarnings> = new Map();
+
 interface AuthContextType {
   authState: AuthState;
   adminSettings: AdminSettings;
@@ -96,6 +101,14 @@ interface AuthContextType {
   getAllUsers: () => User[];
   toggleUserStatus: (userId: string) => Promise<boolean>;
   updateAdminSettings: (settings: Partial<AdminSettings>) => void;
+  enableProfessionalMode: (userId: string) => Promise<boolean>;
+  createAdCampaign: (campaign: Omit<AdCampaign, 'id' | 'createdAt' | 'impressions' | 'clicks' | 'spent'>) => Promise<string>;
+  processPayment: (payment: Omit<PaymentTransaction, 'id' | 'createdAt'>) => Promise<boolean>;
+  getAdCampaigns: (advertiserId?: string) => AdCampaign[];
+  getUserEarnings: (userId: string) => UserEarnings | null;
+  requestWithdrawal: (userId: string, amount: number, method: PaymentMethod, phone: string) => Promise<boolean>;
+  getActiveAds: () => AdCampaign[];
+  recordAdImpression: (campaignId: string, userId: string, postId?: string, storyId?: string) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -215,7 +228,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     );
 
     if (existingUser) {
-      toast.error('এই ফোন নম্বর/ইমেইল ইতিমধ্যে নিবন্ধিত');
+      toast.error('এ�� ফোন নম্বর/ইমেইল ইতিমধ্যে নিবন্ধিত');
       return false;
     }
 
@@ -266,7 +279,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     if (userId === authState.user.id) {
-      toast.error('ন���জেকে ডিলিট করতে পারবেন না');
+      toast.error('নিজেকে ডিলিট করতে পারবেন না');
       return false;
     }
 
