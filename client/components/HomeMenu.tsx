@@ -1,4 +1,4 @@
-import { ChevronDown, Home, Users, Store, Video, Calendar, Bookmark, Clock, Settings, HelpCircle, LogOut } from "lucide-react";
+import { ChevronDown, Home, Users, Store, Video, Calendar, Bookmark, Clock, Settings, HelpCircle, LogOut, Target, Crown } from "lucide-react";
 import { Button } from "./ui/button";
 import {
   DropdownMenu,
@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export function HomeMenu() {
   return (
