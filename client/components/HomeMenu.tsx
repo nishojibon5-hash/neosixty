@@ -12,6 +12,9 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 export function HomeMenu() {
+  const { authState } = useAuth();
+  const user = authState.user;
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
