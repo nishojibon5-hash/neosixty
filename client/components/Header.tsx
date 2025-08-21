@@ -1,11 +1,14 @@
-import { Search, Home, Users, MessageCircle, Bell, Grid3X3, Menu } from "lucide-react";
+import { Search, Home, Users, MessageCircle, Bell, Grid3X3, Menu, Shield, LogOut, Settings } from "lucide-react";
 import { LogoWithText } from "./Logo";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Link } from "react-router-dom";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import { Badge } from "./ui/badge";
+import { Link, useNavigate } from "react-router-dom";
 import { HomeMenu } from "./HomeMenu";
 import { BackButton } from "./BackButton";
+import { useAuth } from "../context/AuthContext";
 import { cn } from "@/lib/utils";
 
 export function Header() {
