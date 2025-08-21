@@ -149,7 +149,8 @@ type Action =
   | { type: 'UPDATE_FOLLOWER_COUNT'; payload: { userId: string; increment: boolean } }
   | { type: 'UPDATE_VERIFICATION'; payload: { userId: string; isVerified: boolean } }
   | { type: 'DELETE_POST'; payload: { postId: string } }
-  | { type: 'DELETE_COMMENT'; payload: { postId: string; commentId: string } };
+  | { type: 'DELETE_COMMENT'; payload: { postId: string; commentId: string } }
+  | { type: 'UPDATE_CURRENT_USER'; payload: { user: User } };
 
 function appReducer(state: AppState, action: Action): AppState {
   switch (action.type) {
