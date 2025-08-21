@@ -83,7 +83,10 @@ const initialPosts: Post[] = [
       username: 'ahmed.khan',
       followerCount: 2500,
       followingCount: 340,
-      isVerified: true
+      isVerified: true,
+      role: 'user',
+      createdAt: new Date().toISOString(),
+      isActive: true
     },
     content: 'Just finished building my first React Native app! 🚀 The journey from web development to mobile has been incredible. Can\'t wait to share it with everyone soon.',
     isHtml: false,
