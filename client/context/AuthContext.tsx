@@ -182,7 +182,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       followingCount: 0,
       isVerified: false,
       createdAt: new Date().toISOString(),
-      isActive: true
+      isActive: true,
+      isProfessional: false,
+      monetizationEnabled: false
     };
 
     users.push(newUser);
@@ -195,7 +197,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = () => {
     dispatch({ type: 'LOGOUT' });
     localStorage.removeItem('neo_sixty_user');
-    toast.success('সফলভাবে লগআ��ট হয়েছে');
+    toast.success('সফলভাবে লগআউট হয়েছে');
   };
 
   const createUser = async (userData: RegisterData & { role: UserRole }): Promise<boolean> => {
@@ -264,7 +266,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     if (userId === authState.user.id) {
-      toast.error('নিজেকে ডিলিট করতে পারবেন না');
+      toast.error('ন���জেকে ডিলিট করতে পারবেন না');
       return false;
     }
 
