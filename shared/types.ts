@@ -55,6 +55,9 @@ export interface User {
   role: UserRole;
   createdAt: string;
   isActive: boolean;
+  isProfessional: boolean;
+  monetizationEnabled: boolean;
+  earnings?: UserEarnings;
 }
 
 export type ReactionType = 'like' | 'love' | 'haha' | 'wow' | 'angry' | 'sad';
