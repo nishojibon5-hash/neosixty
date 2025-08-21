@@ -117,7 +117,10 @@ const initialPosts: Post[] = [
       username: 'sarah.ali',
       followerCount: 1200,
       followingCount: 920,
-      isVerified: false
+      isVerified: false,
+      role: 'user',
+      createdAt: new Date().toISOString(),
+      isActive: true
     },
     content: '<div style="padding: 20px; background: linear-gradient(45deg, #ff6b6b, #4ecdc4); border-radius: 10px; color: white; text-align: center;"><h2>🌅 Beautiful Sunset</h2><p>Sometimes we need to pause and appreciate the simple moments in life.</p><p><strong>What made you smile today?</strong></p></div>',
     isHtml: true,
