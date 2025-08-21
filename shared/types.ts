@@ -38,6 +38,8 @@ export interface UserProfile {
   languages: string[];
 }
 
+export type UserRole = 'user' | 'editor' | 'moderator' | 'admin';
+
 export interface User {
   id: string;
   name: string;
@@ -47,6 +49,12 @@ export interface User {
   followerCount: number;
   followingCount: number;
   isVerified: boolean;
+  phoneNumber?: string;
+  email?: string;
+  password?: string;
+  role: UserRole;
+  createdAt: string;
+  isActive: boolean;
 }
 
 export type ReactionType = 'like' | 'love' | 'haha' | 'wow' | 'angry' | 'sad';
