@@ -517,8 +517,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  // Import auth context to provide auth methods
+  const authContext = useAuth();
+
   const value: AppContextType = {
     state,
+    authState: authContext.authState,
+    adminSettings: authContext.adminSettings,
+    login: authContext.login,
+    register: authContext.register,
+    logout: authContext.logout,
     addPost,
     addStory,
     addReaction,
@@ -533,7 +541,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
     updateUserProfile,
     updateUserAvatar,
     updateFollowerCount,
-    checkAndUpdateVerification
+    checkAndUpdateVerification,
+    createUser: authContext.createUser,
+    updateUser: authContext.updateUser,
+    deleteUser: authContext.deleteUser,
+    getAllUsers: authContext.getAllUsers,
+    toggleUserStatus: authContext.toggleUserStatus,
+    updateAdminSettings: authContext.updateAdminSettings,
+    deletePost,
+    deleteComment
   };
   
   return (
