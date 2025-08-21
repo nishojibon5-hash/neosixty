@@ -12,7 +12,10 @@ const initialAdminSettings: AdminSettings = {
   allowStories: true,
   allowComments: true,
   allowReactions: true,
-  moderationEnabled: false
+  moderationEnabled: false,
+  monetizationEnabled: true,
+  minimumWithdrawal: 30,
+  adRevenueShare: 70
 };
 
 // In-memory user storage for this demo
