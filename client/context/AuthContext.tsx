@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, ReactNode, useEffect } from 'react';
-import { AuthState, LoginCredentials, RegisterData, User, UserRole, AdminSettings } from '@shared/types';
+import { AuthState, LoginCredentials, RegisterData, User, UserRole, AdminSettings, AdCampaign, PaymentTransaction, UserEarnings, PaymentMethod } from '@shared/types';
 import { toast } from 'sonner';
 
 const ADMIN_PHONE = '01650074073';
@@ -229,7 +229,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     users.push(newUser);
-    toast.success(`ন���ুন ${userData.role} তৈরি হয়েছে`);
+    toast.success(`নতুন ${userData.role} তৈরি হয়েছে`);
     return true;
   };
 
