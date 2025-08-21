@@ -35,7 +35,10 @@ const initialStories: Story[] = [
       username: 'ahmed.khan',
       followerCount: 2500,
       followingCount: 340,
-      isVerified: true
+      isVerified: true,
+      role: 'user',
+      createdAt: new Date().toISOString(),
+      isActive: true
     },
     image: '/placeholder.svg',
     timeAgo: '2 hours ago',
@@ -50,7 +53,10 @@ const initialStories: Story[] = [
       username: 'sarah.ali',
       followerCount: 1200,
       followingCount: 920,
-      isVerified: false
+      isVerified: false,
+      role: 'user',
+      createdAt: new Date().toISOString(),
+      isActive: true
     },
     image: '/placeholder.svg',
     timeAgo: '4 hours ago',
