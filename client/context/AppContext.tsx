@@ -384,12 +384,22 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(appReducer, initialState);
-  
+
   const addPost = (content: string, isHtml: boolean, image?: string, video?: string, mentions?: string[], tags?: string[]) => {
-    dispatch({ 
-      type: 'ADD_POST', 
-      payload: { content, isHtml, image, video, mentions, tags } 
+    dispatch({
+      type: 'ADD_POST',
+      payload: { content, isHtml, image, video, mentions, tags }
     });
+  };
+
+  const deletePost = (postId: string) => {
+    dispatch({ type: 'DELETE_POST', payload: { postId } });
+    toast.success('পোস্ট ডিলিট হয়েছে');
+  };
+
+  const deleteComment = (postId: string, commentId: string) => {
+    dispatch({ type: 'DELETE_COMMENT', payload: { postId, commentId } });
+    toast.success('কমেন্ট ডিলিট হয়েছে');
   };
   
   const addStory = (image: string) => {
