@@ -127,7 +127,7 @@ const initialPosts: Post[] = [
 ];
 
 const initialState: AppState = {
-  currentUser,
+  currentUser: defaultUser,
   posts: initialPosts,
   stories: initialStories
 };
