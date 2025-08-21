@@ -430,6 +430,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
     dispatch({ type: 'DELETE_COMMENT', payload: { postId, commentId } });
     toast.success('কমেন্ট ডিলিট হয়েছে');
   };
+
+  const updateCurrentUser = (user: User) => {
+    dispatch({ type: 'UPDATE_CURRENT_USER', payload: { user } });
+  };
   
   const addStory = (image: string) => {
     dispatch({ type: 'ADD_STORY', payload: { image } });
