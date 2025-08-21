@@ -368,6 +368,13 @@ function appReducer(state: AppState, action: Action): AppState {
       };
     }
 
+    case 'UPDATE_CURRENT_USER': {
+      return {
+        ...state,
+        currentUser: action.payload.user
+      };
+    }
+
     case 'SEND_FRIEND_REQUEST':
     case 'ACCEPT_FRIEND_REQUEST':
     case 'FOLLOW_USER':
