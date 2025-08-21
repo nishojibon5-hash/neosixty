@@ -112,8 +112,40 @@ export interface FriendRequest {
   timeAgo: string;
 }
 
+export interface AuthState {
+  isAuthenticated: boolean;
+  user: User | null;
+  isLoading: boolean;
+}
+
+export interface LoginCredentials {
+  phoneOrEmail: string;
+  password: string;
+}
+
+export interface RegisterData {
+  name: string;
+  phoneOrEmail: string;
+  password: string;
+}
+
+export interface AdminSettings {
+  appName: string;
+  allowRegistration: boolean;
+  allowPosts: boolean;
+  allowStories: boolean;
+  allowComments: boolean;
+  allowReactions: boolean;
+  moderationEnabled: boolean;
+}
+
 export interface AppContextType {
   state: AppState;
+  authState: AuthState;
+  adminSettings: AdminSettings;
+  login: (credentials: LoginCredentials) => Promise<boolean>;
+  register: (data: RegisterData) => Promise<boolean>;
+  logout: () => void;
   addPost: (content: string, isHtml: boolean, image?: string, video?: string, mentions?: string[], tags?: string[]) => void;
   addStory: (image: string) => void;
   addReaction: (postId: string, reactionType: ReactionType) => void;
@@ -129,4 +161,12 @@ export interface AppContextType {
   updateUserAvatar: (avatar: string) => void;
   updateFollowerCount: (userId: string, increment: boolean) => void;
   checkAndUpdateVerification: (userId: string) => void;
+  createUser: (userData: RegisterData & { role: UserRole }) => Promise<boolean>;
+  updateUser: (userId: string, updates: Partial<User>) => Promise<boolean>;
+  deleteUser: (userId: string) => Promise<boolean>;
+  getAllUsers: () => User[];
+  toggleUserStatus: (userId: string) => Promise<boolean>;
+  updateAdminSettings: (settings: Partial<AdminSettings>) => void;
+  deletePost: (postId: string) => void;
+  deleteComment: (postId: string, commentId: string) => void;
 }
