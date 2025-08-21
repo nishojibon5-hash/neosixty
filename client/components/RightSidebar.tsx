@@ -14,7 +14,10 @@ const friendSuggestions = [
     username: 'rahman.ahmed',
     followerCount: 1200,
     followingCount: 890,
-    isVerified: true
+    isVerified: true,
+    role: 'user' as const,
+    createdAt: new Date().toISOString(),
+    isActive: true
   },
   {
     id: 'user2',
@@ -23,7 +26,10 @@ const friendSuggestions = [
     username: 'fatima.khan',
     followerCount: 650,
     followingCount: 420,
-    isVerified: false
+    isVerified: false,
+    role: 'user' as const,
+    createdAt: new Date().toISOString(),
+    isActive: true
   },
   {
     id: 'user3',
@@ -32,7 +38,10 @@ const friendSuggestions = [
     username: 'hassan.ali',
     followerCount: 2800,
     followingCount: 150,
-    isVerified: true
+    isVerified: true,
+    role: 'user' as const,
+    createdAt: new Date().toISOString(),
+    isActive: true
   }
 ];
 
