@@ -69,13 +69,54 @@ export function Header() {
           <Button variant="ghost" size="icon" className="hidden sm:flex">
             <Bell className="h-5 w-5" />
           </Button>
-          
-          <Link to="/profile">
-            <Avatar className="h-8 w-8 cursor-pointer hover:ring-2 hover:ring-primary transition-all">
-              <AvatarImage src="/placeholder.svg" />
-              <AvatarFallback>MS</AvatarFallback>
-            </Avatar>
-          </Link>
+
+          {/* User Menu */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <div className="flex items-center gap-2 cursor-pointer hover:bg-muted rounded-lg p-1 transition-colors">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src={authState.user?.avatar} />
+                  <AvatarFallback>
+                    {authState.user?.name?.charAt(0)?.toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="hidden md:flex flex-col items-start">
+                  <span className="text-sm font-medium">{authState.user?.name}</span>
+                  {authState.user?.role === 'admin' && (
+                    <Badge variant="destructive" className="text-xs h-4">
+                      এডমিন
+                    </Badge>
+                  )}
+                </div>
+              </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuItem asChild>
+                <Link to="/profile" className="flex items-center">
+                  <Users className="mr-2 h-4 w-4" />
+                  প্রোফাইল
+                </Link>
+              </DropdownMenuItem>
+
+              {authState.user?.role === 'admin' && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link to="/admin" className="flex items-center text-red-600">
+                      <Shield className="mr-2 h-4 w-4" />
+                      এডমিন প্যানেল
+                    </Link>
+                  </DropdownMenuItem>
+                </>
+              )}
+
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleLogout} className="text-red-600">
+                <LogOut className="mr-2 h-4 w-4" />
+                লগআউট
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </header>
