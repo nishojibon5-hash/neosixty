@@ -46,7 +46,10 @@ const friendRequests = [
       username: 'ayesha.r',
       followerCount: 450,
       followingCount: 320,
-      isVerified: false
+      isVerified: false,
+      role: 'user' as const,
+      createdAt: new Date().toISOString(),
+      isActive: true
     },
     timeAgo: '2 hours ago'
   }
