@@ -515,8 +515,28 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // Import auth context to provide auth methods
-  const authContext = useAuth();
+  // Get auth context to provide auth methods
+  const authContext = React.useContext(require('./AuthContext').AuthContext) || {
+    authState: { isAuthenticated: false, user: null, isLoading: false },
+    adminSettings: {
+      appName: 'Neo sixty',
+      allowRegistration: true,
+      allowPosts: true,
+      allowStories: true,
+      allowComments: true,
+      allowReactions: true,
+      moderationEnabled: false
+    },
+    login: async () => false,
+    register: async () => false,
+    logout: () => {},
+    createUser: async () => false,
+    updateUser: async () => false,
+    deleteUser: async () => false,
+    getAllUsers: () => [],
+    toggleUserStatus: async () => false,
+    updateAdminSettings: () => {}
+  };
 
   const value: AppContextType = {
     state,
