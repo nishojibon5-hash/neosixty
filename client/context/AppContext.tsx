@@ -89,7 +89,7 @@ const initialPosts: Post[] = [
     comments: [
       {
         id: 'comment-1',
-        author: currentUser,
+        author: defaultUser,
         content: 'Congratulations! That\'s amazing progress.',
         timeAgo: '1 hour ago',
         likes: 5
