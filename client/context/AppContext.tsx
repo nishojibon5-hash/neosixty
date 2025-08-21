@@ -369,6 +369,27 @@ function appReducer(state: AppState, action: Action): AppState {
       };
     }
 
+    case 'DELETE_POST': {
+      return {
+        ...state,
+        posts: state.posts.filter(post => post.id !== action.payload.postId)
+      };
+    }
+
+    case 'DELETE_COMMENT': {
+      return {
+        ...state,
+        posts: state.posts.map(post =>
+          post.id === action.payload.postId
+            ? {
+                ...post,
+                comments: post.comments.filter(comment => comment.id !== action.payload.commentId)
+              }
+            : post
+        )
+      };
+    }
+
     case 'SEND_FRIEND_REQUEST':
     case 'ACCEPT_FRIEND_REQUEST':
     case 'FOLLOW_USER':
