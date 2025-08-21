@@ -170,7 +170,9 @@ type Action =
   | { type: 'UPDATE_USER_PROFILE'; payload: { profile: UserProfile } }
   | { type: 'UPDATE_USER_AVATAR'; payload: { avatar: string } }
   | { type: 'UPDATE_FOLLOWER_COUNT'; payload: { userId: string; increment: boolean } }
-  | { type: 'UPDATE_VERIFICATION'; payload: { userId: string; isVerified: boolean } };
+  | { type: 'UPDATE_VERIFICATION'; payload: { userId: string; isVerified: boolean } }
+  | { type: 'DELETE_POST'; payload: { postId: string } }
+  | { type: 'DELETE_COMMENT'; payload: { postId: string; commentId: string } };
 
 function appReducer(state: AppState, action: Action): AppState {
   switch (action.type) {
