@@ -137,6 +137,85 @@ export interface AdminSettings {
   allowComments: boolean;
   allowReactions: boolean;
   moderationEnabled: boolean;
+  monetizationEnabled: boolean;
+  minimumWithdrawal: number;
+  adRevenueShare: number; // percentage for content creators
+}
+
+export type AdStatus = 'pending' | 'active' | 'paused' | 'completed' | 'rejected';
+export type PaymentStatus = 'pending' | 'completed' | 'failed' | 'refunded';
+export type PaymentMethod = 'bkash' | 'nagad';
+
+export interface AdCampaign {
+  id: string;
+  advertiserId: string;
+  advertiserName: string;
+  title: string;
+  description: string;
+  imageUrl?: string;
+  videoUrl?: string;
+  targetUrl: string;
+  budget: number;
+  dailyBudget: number;
+  duration: number; // days
+  targetAudience: {
+    ageMin?: number;
+    ageMax?: number;
+    gender?: 'male' | 'female' | 'all';
+    interests?: string[];
+    locations?: string[];
+  };
+  status: AdStatus;
+  createdAt: string;
+  startDate: string;
+  endDate: string;
+  impressions: number;
+  clicks: number;
+  spent: number;
+  isFree: boolean; // for 1-day free ads
+}
+
+export interface PaymentTransaction {
+  id: string;
+  userId: string;
+  amount: number;
+  method: PaymentMethod;
+  phone: string;
+  transactionId?: string;
+  status: PaymentStatus;
+  type: 'ad_payment' | 'withdrawal';
+  campaignId?: string;
+  createdAt: string;
+  completedAt?: string;
+}
+
+export interface UserEarnings {
+  userId: string;
+  totalEarned: number;
+  currentBalance: number;
+  totalWithdrawn: number;
+  lastPaymentDate?: string;
+  isProfessional: boolean;
+  monetizationEnabled: boolean;
+}
+
+export interface AdImpression {
+  id: string;
+  campaignId: string;
+  userId: string; // content creator
+  postId?: string;
+  storyId?: string;
+  revenue: number;
+  viewedAt: string;
+}
+
+export interface ContentCreatorStats {
+  userId: string;
+  totalViews: number;
+  totalImpressions: number;
+  totalRevenue: number;
+  monthlyViews: number;
+  monthlyRevenue: number;
 }
 
 export interface AppContextType {
