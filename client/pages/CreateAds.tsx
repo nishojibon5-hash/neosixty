@@ -1,33 +1,43 @@
-import React from 'react';
-import { CreateAd } from '../components/CreateAd';
-import { useApp } from '../context/AppContext';
-import { AdCampaign, PaymentMethod } from '@shared/types';
+import React from "react";
+import { CreateAd } from "../components/CreateAd";
+import { useApp } from "../context/AppContext";
+import { AdCampaign, PaymentMethod } from "@shared/types";
 
 export default function CreateAds() {
   const { createAdCampaign, processPayment } = useApp();
 
-  const handleCreateCampaign = async (campaign: Omit<AdCampaign, 'id' | 'createdAt' | 'impressions' | 'clicks' | 'spent'>): Promise<string> => {
+  const handleCreateCampaign = async (
+    campaign: Omit<
+      AdCampaign,
+      "id" | "createdAt" | "impressions" | "clicks" | "spent"
+    >,
+  ): Promise<string> => {
     try {
       return await createAdCampaign(campaign);
     } catch (error) {
-      console.error('Failed to create campaign:', error);
+      console.error("Failed to create campaign:", error);
       throw error;
     }
   };
 
-  const handleProcessPayment = async (campaignId: string, amount: number, method: PaymentMethod, phone: string): Promise<boolean> => {
+  const handleProcessPayment = async (
+    campaignId: string,
+    amount: number,
+    method: PaymentMethod,
+    phone: string,
+  ): Promise<boolean> => {
     try {
       return await processPayment({
-        userId: 'current-user', // Should be from auth context
+        userId: "current-user", // Should be from auth context
         amount,
         method,
         phone,
-        status: 'pending',
-        type: 'ad_payment',
-        campaignId
+        status: "pending",
+        type: "ad_payment",
+        campaignId,
       });
     } catch (error) {
-      console.error('Payment processing failed:', error);
+      console.error("Payment processing failed:", error);
       throw error;
     }
   };

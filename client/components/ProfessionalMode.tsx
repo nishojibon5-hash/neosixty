@@ -1,24 +1,30 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Button } from './ui/button';
-import { Badge } from './ui/badge';
-import { Switch } from './ui/switch';
-import { Alert, AlertDescription } from './ui/alert';
-import { 
-  Crown, 
-  DollarSign, 
-  Users, 
-  TrendingUp, 
-  Video, 
-  Image, 
+import React, { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import { Button } from "./ui/button";
+import { Badge } from "./ui/badge";
+import { Switch } from "./ui/switch";
+import { Alert, AlertDescription } from "./ui/alert";
+import {
+  Crown,
+  DollarSign,
+  Users,
+  TrendingUp,
+  Video,
+  Image,
   FileText,
   Eye,
   Wallet,
   CheckCircle,
-  Info
-} from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
-import { User, UserEarnings } from '@shared/types';
+  Info,
+} from "lucide-react";
+import { useAuth } from "../context/AuthContext";
+import { User, UserEarnings } from "@shared/types";
 
 interface ProfessionalModeProps {
   user: User;
@@ -26,7 +32,11 @@ interface ProfessionalModeProps {
   onToggleMonetization: () => void;
 }
 
-export function ProfessionalMode({ user, onEnableProfessional, onToggleMonetization }: ProfessionalModeProps) {
+export function ProfessionalMode({
+  user,
+  onEnableProfessional,
+  onToggleMonetization,
+}: ProfessionalModeProps) {
   const { authState } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -36,12 +46,12 @@ export function ProfessionalMode({ user, onEnableProfessional, onToggleMonetizat
 
   const handleEnableProfessional = async () => {
     if (!isEligible) return;
-    
+
     setIsLoading(true);
     try {
       await onEnableProfessional();
     } catch (error) {
-      console.error('Failed to enable professional mode:', error);
+      console.error("Failed to enable professional mode:", error);
     } finally {
       setIsLoading(false);
     }
@@ -53,7 +63,7 @@ export function ProfessionalMode({ user, onEnableProfessional, onToggleMonetizat
     currentBalance: 0,
     totalWithdrawn: 0,
     isProfessional: false,
-    monetizationEnabled: false
+    monetizationEnabled: false,
   };
 
   return (
@@ -86,18 +96,23 @@ export function ProfessionalMode({ user, onEnableProfessional, onToggleMonetizat
                 <span className="font-medium">ফলোয়ার প্রয়োজনীয়তা</span>
               </div>
               <div className="flex items-center space-x-2">
-                <span className="text-lg font-bold">{user.followerCount.toLocaleString()}</span>
+                <span className="text-lg font-bold">
+                  {user.followerCount.toLocaleString()}
+                </span>
                 <span className="text-muted-foreground">/ ১,০০০</span>
-                {isEligible && <CheckCircle className="h-5 w-5 text-green-600" />}
+                {isEligible && (
+                  <CheckCircle className="h-5 w-5 text-green-600" />
+                )}
               </div>
             </div>
-            
+
             {!isEligible && (
               <Alert>
                 <Info className="h-4 w-4" />
                 <AlertDescription>
-                  প্রফেশন��ল মোড চালু করতে আপনার কমপক্ষে ১,০০০ ফলোয়ার প্রয়োজন। 
-                  বর্তমানে আপনার {1000 - user.followerCount} ফলোয়ার বেশি প্রয়োজন।
+                  প্রফেশন��ল মোড চালু করতে আপনার কমপক্ষে ১,০০০ ফলোয়ার প্রয়োজন।
+                  বর্তমানে আপনার {1000 - user.followerCount} ফলোয়ার বেশি
+                  প্রয়োজন।
                 </AlertDescription>
               </Alert>
             )}
@@ -106,16 +121,19 @@ export function ProfessionalMode({ user, onEnableProfessional, onToggleMonetizat
           {/* Professional Mode Toggle */}
           {isEligible && !isProfessional && (
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">প্রফেশনাল মোড সক্রিয় করুন</h3>
+              <h3 className="text-lg font-semibold">
+                প্রফেশনাল মোড সক্রিয় করুন
+              </h3>
               <p className="text-muted-foreground">
-                প্রফেশনাল মোড চালু করলে আপনি আপনার ভিডিও, ছবি, স্টোরি এবং পোস্ট থেকে আয় করতে পারবেন।
+                প্রফেশনাল মোড চালু করলে আপনি আপনার ভিডিও, ছবি, স্টোরি এবং পোস্ট
+                থেকে আয় করতে পারবেন।
               </p>
-              <Button 
+              <Button
                 onClick={handleEnableProfessional}
                 disabled={isLoading}
                 className="w-full"
               >
-                {isLoading ? 'সক্রিয় করা হচ্ছে...' : 'প্রফেশনাল মোড চালু করুন'}
+                {isLoading ? "সক্রিয় করা হচ্ছে..." : "প্রফেশনাল মোড চালু করুন"}
               </Button>
             </div>
           )}
@@ -160,7 +178,7 @@ export function ProfessionalMode({ user, onEnableProfessional, onToggleMonetizat
                   ${earnings.currentBalance.toFixed(2)}
                 </p>
               </div>
-              
+
               <div className="p-4 bg-blue-50 rounded-lg">
                 <div className="flex items-center space-x-2 mb-2">
                   <TrendingUp className="h-5 w-5 text-blue-600" />
@@ -208,28 +226,34 @@ export function ProfessionalMode({ user, onEnableProfessional, onToggleMonetizat
                   <p className="text-sm text-muted-foreground">অটো বিজ্ঞাপন</p>
                 </div>
               </div>
-              
+
               <div className="flex items-center space-x-3 p-3 border rounded-lg">
                 <Image className="h-6 w-6 text-blue-500" />
                 <div>
                   <h4 className="font-medium">ছবি</h4>
-                  <p className="text-sm text-muted-foreground">স্পন্সর কন্টেন্ট</p>
+                  <p className="text-sm text-muted-foreground">
+                    স্পন্সর কন্টেন্ট
+                  </p>
                 </div>
               </div>
-              
+
               <div className="flex items-center space-x-3 p-3 border rounded-lg">
                 <Eye className="h-6 w-6 text-purple-500" />
                 <div>
                   <h4 className="font-medium">স্টোরি</h4>
-                  <p className="text-sm text-muted-foreground">স্টোরি বিজ্ঞাপন</p>
+                  <p className="text-sm text-muted-foreground">
+                    স্টোরি বিজ্ঞাপন
+                  </p>
                 </div>
               </div>
-              
+
               <div className="flex items-center space-x-3 p-3 border rounded-lg">
                 <FileText className="h-6 w-6 text-green-500" />
                 <div>
                   <h4 className="font-medium">টেক্সট</h4>
-                  <p className="text-sm text-muted-foreground">প্রমোটেড পোস্ট</p>
+                  <p className="text-sm text-muted-foreground">
+                    প্রমোটেড পোস্ট
+                  </p>
                 </div>
               </div>
             </div>

@@ -1,8 +1,12 @@
-import React, { useEffect } from 'react';
-import { useAuth } from './AuthContext';
-import { useApp } from './AppContext';
+import React, { useEffect } from "react";
+import { useAuth } from "./AuthContext";
+import { useApp } from "./AppContext";
 
-export function ContextIntegration({ children }: { children: React.ReactNode }) {
+export function ContextIntegration({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const { authState } = useAuth();
   const { updateCurrentUser, state } = useApp();
 

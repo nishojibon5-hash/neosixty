@@ -1,17 +1,30 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Button } from './ui/button';
-import { Badge } from './ui/badge';
-import { Progress } from './ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { Alert, AlertDescription } from './ui/alert';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
-import { 
-  DollarSign, 
-  TrendingUp, 
-  Eye, 
-  Video, 
-  Image, 
+import React, { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import { Button } from "./ui/button";
+import { Badge } from "./ui/badge";
+import { Progress } from "./ui/progress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import { Alert, AlertDescription } from "./ui/alert";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
+import {
+  DollarSign,
+  TrendingUp,
+  Eye,
+  Video,
+  Image,
   FileText,
   Calendar,
   Wallet,
@@ -21,23 +34,32 @@ import {
   Target,
   Clock,
   CheckCircle,
-  AlertCircle
-} from 'lucide-react';
-import { UserEarnings, ContentCreatorStats, AdImpression, PaymentMethod } from '@shared/types';
-import { PaymentDialog } from './PaymentSystem';
+  AlertCircle,
+} from "lucide-react";
+import {
+  UserEarnings,
+  ContentCreatorStats,
+  AdImpression,
+  PaymentMethod,
+} from "@shared/types";
+import { PaymentDialog } from "./PaymentSystem";
 
 interface EarningsDashboardProps {
   earnings: UserEarnings;
   stats: ContentCreatorStats;
   recentImpressions: AdImpression[];
-  onRequestWithdrawal: (amount: number, method: PaymentMethod, phone: string) => Promise<boolean>;
+  onRequestWithdrawal: (
+    amount: number,
+    method: PaymentMethod,
+    phone: string,
+  ) => Promise<boolean>;
 }
 
-export function EarningsDashboard({ 
-  earnings, 
-  stats, 
-  recentImpressions, 
-  onRequestWithdrawal 
+export function EarningsDashboard({
+  earnings,
+  stats,
+  recentImpressions,
+  onRequestWithdrawal,
 }: EarningsDashboardProps) {
   const [withdrawalAmount, setWithdrawalAmount] = useState(30);
   const [showWithdrawalDialog, setShowWithdrawalDialog] = useState(false);
@@ -49,13 +71,17 @@ export function EarningsDashboard({
   const handleWithdrawal = async (method: PaymentMethod, phone: string) => {
     setIsProcessingWithdrawal(true);
     try {
-      const success = await onRequestWithdrawal(withdrawalAmount, method, phone);
+      const success = await onRequestWithdrawal(
+        withdrawalAmount,
+        method,
+        phone,
+      );
       if (success) {
         setShowWithdrawalDialog(false);
         setWithdrawalAmount(30);
       }
     } catch (error) {
-      console.error('Withdrawal failed:', error);
+      console.error("Withdrawal failed:", error);
     } finally {
       setIsProcessingWithdrawal(false);
     }
@@ -65,7 +91,8 @@ export function EarningsDashboard({
 
   const thisMonthRevenue = stats.monthlyRevenue || 0;
   const lastMonthRevenue = thisMonthRevenue * 0.8; // Simulated data
-  const revenueGrowth = ((thisMonthRevenue - lastMonthRevenue) / lastMonthRevenue) * 100;
+  const revenueGrowth =
+    ((thisMonthRevenue - lastMonthRevenue) / lastMonthRevenue) * 100;
 
   return (
     <div className="space-y-6">
@@ -73,13 +100,15 @@ export function EarningsDashboard({
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">আয়ের ড্যাশবোর্ড</h1>
-          <p className="text-muted-foreground">আপনার মনিটাইজেশন পারফরম্যান্স ট্র্যাক করুন</p>
+          <p className="text-muted-foreground">
+            আপনার মনিটাইজেশন পারফরম্যান্স ট্র্যাক করুন
+          </p>
         </div>
-        <Badge 
+        <Badge
           variant={earnings.monetizationEnabled ? "default" : "secondary"}
           className="text-sm py-1 px-3"
         >
-          {earnings.monetizationEnabled ? 'মনিটাইজেশন চালু' : 'মনিটাইজেশন বন্ধ'}
+          {earnings.monetizationEnabled ? "মনিটাইজেশন চালু" : "মনিটাইজেশন বন্ধ"}
         </Badge>
       </div>
 
@@ -87,16 +116,16 @@ export function EarningsDashboard({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">বর্তমান ব্যালেন্স</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              বর্তমান ব্যালেন্স
+            </CardTitle>
             <Wallet className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-600">
               {formatCurrency(earnings.currentBalance)}
             </div>
-            <p className="text-xs text-muted-foreground">
-              উত্তোলনযোগ্য
-            </p>
+            <p className="text-xs text-muted-foreground">উত্তোলনযোগ্য</p>
           </CardContent>
         </Card>
 
@@ -109,9 +138,7 @@ export function EarningsDashboard({
             <div className="text-2xl font-bold">
               {formatCurrency(earnings.totalEarned)}
             </div>
-            <p className="text-xs text-muted-foreground">
-              সর্বমোট আয়
-            </p>
+            <p className="text-xs text-muted-foreground">সর্বমোট আয়</p>
           </CardContent>
         </Card>
 
@@ -125,7 +152,8 @@ export function EarningsDashboard({
               {formatCurrency(thisMonthRevenue)}
             </div>
             <p className="text-xs text-muted-foreground">
-              {revenueGrowth > 0 ? '+' : ''}{revenueGrowth.toFixed(1)}% গত মাস থেকে
+              {revenueGrowth > 0 ? "+" : ""}
+              {revenueGrowth.toFixed(1)}% গত মাস থেকে
             </p>
           </CardContent>
         </Card>
@@ -161,9 +189,14 @@ export function EarningsDashboard({
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
               <span>উত্তোলনের জন্য প্রয়োজন</span>
-              <span>{formatCurrency(Math.max(0, 30 - earnings.currentBalance))}</span>
+              <span>
+                {formatCurrency(Math.max(0, 30 - earnings.currentBalance))}
+              </span>
             </div>
-            <Progress value={Math.min(withdrawalProgress, 100)} className="h-2" />
+            <Progress
+              value={Math.min(withdrawalProgress, 100)}
+              className="h-2"
+            />
             <div className="flex justify-between text-sm text-muted-foreground">
               <span>{formatCurrency(earnings.currentBalance)}</span>
               <span>$30.00</span>
@@ -185,7 +218,7 @@ export function EarningsDashboard({
                     আপনার আয় বিকাশ বা নগদের মাধ্যমে উত্তোলন করুন
                   </DialogDescription>
                 </DialogHeader>
-                
+
                 <PaymentDialog
                   isOpen={showWithdrawalDialog}
                   onClose={() => setShowWithdrawalDialog(false)}
@@ -193,10 +226,10 @@ export function EarningsDashboard({
                   purpose="আয় উত্তোলন"
                   onSuccess={(transactionId) => {
                     // Handle successful withdrawal
-                    console.log('Withdrawal successful:', transactionId);
+                    console.log("Withdrawal successful:", transactionId);
                   }}
                 />
-                
+
                 <div className="space-y-4">
                   <Alert>
                     <AlertCircle className="h-4 w-4" />
@@ -204,13 +237,15 @@ export function EarningsDashboard({
                       উত্তোলনের অনুরোধ ২৪ ঘন্টার মধ্যে প্রক্রিয়া করা হবে
                     </AlertDescription>
                   </Alert>
-                  
-                  <Button 
+
+                  <Button
                     onClick={() => setShowWithdrawalDialog(true)}
                     disabled={isProcessingWithdrawal}
                     className="w-full"
                   >
-                    {isProcessingWithdrawal ? 'প্রক্রিয়া করা হচ্ছে...' : 'উত্তোলনের অনুরোধ করুন'}
+                    {isProcessingWithdrawal
+                      ? "প্রক্রিয়া করা হচ্ছে..."
+                      : "উত্তোলনের অনুরোধ করুন"}
                   </Button>
                 </div>
               </DialogContent>
@@ -219,7 +254,8 @@ export function EarningsDashboard({
             <Alert>
               <AlertCircle className="h-4 w-4" />
               <AlertDescription>
-                উত্তোলনের জন্য আরও {formatCurrency(30 - earnings.currentBalance)} আয় করুন
+                উত্তোলনের জন্য আরও{" "}
+                {formatCurrency(30 - earnings.currentBalance)} আয় করুন
               </AlertDescription>
             </Alert>
           )}
@@ -251,7 +287,7 @@ export function EarningsDashboard({
                     </div>
                     <TrendingUp className="h-8 w-8 text-green-600" />
                   </div>
-                  
+
                   <div className="flex justify-between items-center p-3 bg-muted rounded-lg">
                     <div>
                       <p className="font-medium">মোট উত্তোলন</p>
@@ -276,23 +312,29 @@ export function EarningsDashboard({
                       <Video className="h-5 w-5 text-red-500" />
                       <span>ভিডিও ভিউ</span>
                     </div>
-                    <span className="font-bold">{(stats.totalViews * 0.6).toLocaleString()}</span>
+                    <span className="font-bold">
+                      {(stats.totalViews * 0.6).toLocaleString()}
+                    </span>
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       <Image className="h-5 w-5 text-blue-500" />
                       <span>ছবি ভিউ</span>
                     </div>
-                    <span className="font-bold">{(stats.totalViews * 0.3).toLocaleString()}</span>
+                    <span className="font-bold">
+                      {(stats.totalViews * 0.3).toLocaleString()}
+                    </span>
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       <FileText className="h-5 w-5 text-green-500" />
                       <span>পোস্ট ভিউ</span>
                     </div>
-                    <span className="font-bold">{(stats.totalViews * 0.1).toLocaleString()}</span>
+                    <span className="font-bold">
+                      {(stats.totalViews * 0.1).toLocaleString()}
+                    </span>
                   </div>
                 </div>
               </CardContent>
@@ -312,7 +354,10 @@ export function EarningsDashboard({
               <div className="space-y-4">
                 {recentImpressions.length > 0 ? (
                   recentImpressions.slice(0, 5).map((impression, index) => (
-                    <div key={impression.id} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div
+                      key={impression.id}
+                      className="flex items-center justify-between p-3 border rounded-lg"
+                    >
                       <div className="flex items-center space-x-3">
                         <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
                           <Target className="h-4 w-4 text-blue-600" />
@@ -320,7 +365,9 @@ export function EarningsDashboard({
                         <div>
                           <p className="font-medium">বিজ্ঞাপন ইমপ্রেশন</p>
                           <p className="text-sm text-muted-foreground">
-                            {new Date(impression.viewedAt).toLocaleDateString('bn-BD')}
+                            {new Date(impression.viewedAt).toLocaleDateString(
+                              "bn-BD",
+                            )}
                           </p>
                         </div>
                       </div>
@@ -335,7 +382,9 @@ export function EarningsDashboard({
                 ) : (
                   <div className="text-center py-8">
                     <Target className="h-12 w-12 text-muted-foreground mx-auto mb-2" />
-                    <p className="text-muted-foreground">এখনো কোনো বিজ্ঞাপন ইমপ্রেশন নেই</p>
+                    <p className="text-muted-foreground">
+                      এখনো কোনো বিজ্ঞাপন ইমপ্রেশন নেই
+                    </p>
                   </div>
                 )}
               </div>

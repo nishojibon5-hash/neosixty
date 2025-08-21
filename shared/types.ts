@@ -25,7 +25,11 @@ export interface UserProfile {
   phoneNumber?: string;
   email?: string;
   birthday?: string;
-  relationshipStatus?: 'Single' | 'In a relationship' | 'Married' | 'Complicated';
+  relationshipStatus?:
+    | "Single"
+    | "In a relationship"
+    | "Married"
+    | "Complicated";
   work: WorkInfo[];
   education: EducationInfo[];
   socialLinks: {
@@ -38,7 +42,7 @@ export interface UserProfile {
   languages: string[];
 }
 
-export type UserRole = 'user' | 'editor' | 'moderator' | 'admin';
+export type UserRole = "user" | "editor" | "moderator" | "admin";
 
 export interface User {
   id: string;
@@ -60,7 +64,7 @@ export interface User {
   earnings?: UserEarnings;
 }
 
-export type ReactionType = 'like' | 'love' | 'haha' | 'wow' | 'angry' | 'sad';
+export type ReactionType = "like" | "love" | "haha" | "wow" | "angry" | "sad";
 
 export interface Reaction {
   count: number;
@@ -111,7 +115,7 @@ export interface FriendRequest {
   id: string;
   from: User;
   to: User;
-  status: 'pending' | 'accepted' | 'rejected';
+  status: "pending" | "accepted" | "rejected";
   timeAgo: string;
 }
 
@@ -145,9 +149,14 @@ export interface AdminSettings {
   adRevenueShare: number; // percentage for content creators
 }
 
-export type AdStatus = 'pending' | 'active' | 'paused' | 'completed' | 'rejected';
-export type PaymentStatus = 'pending' | 'completed' | 'failed' | 'refunded';
-export type PaymentMethod = 'bkash' | 'nagad';
+export type AdStatus =
+  | "pending"
+  | "active"
+  | "paused"
+  | "completed"
+  | "rejected";
+export type PaymentStatus = "pending" | "completed" | "failed" | "refunded";
+export type PaymentMethod = "bkash" | "nagad";
 
 export interface AdCampaign {
   id: string;
@@ -164,7 +173,7 @@ export interface AdCampaign {
   targetAudience: {
     ageMin?: number;
     ageMax?: number;
-    gender?: 'male' | 'female' | 'all';
+    gender?: "male" | "female" | "all";
     interests?: string[];
     locations?: string[];
   };
@@ -186,7 +195,7 @@ export interface PaymentTransaction {
   phone: string;
   transactionId?: string;
   status: PaymentStatus;
-  type: 'ad_payment' | 'withdrawal';
+  type: "ad_payment" | "withdrawal";
   campaignId?: string;
   createdAt: string;
   completedAt?: string;
@@ -228,11 +237,23 @@ export interface AppContextType {
   login: (credentials: LoginCredentials) => Promise<boolean>;
   register: (data: RegisterData) => Promise<boolean>;
   logout: () => void;
-  addPost: (content: string, isHtml: boolean, image?: string, video?: string, mentions?: string[], tags?: string[]) => void;
+  addPost: (
+    content: string,
+    isHtml: boolean,
+    image?: string,
+    video?: string,
+    mentions?: string[],
+    tags?: string[],
+  ) => void;
   addStory: (image: string) => void;
   addReaction: (postId: string, reactionType: ReactionType) => void;
   removeReaction: (postId: string, reactionType: ReactionType) => void;
-  addComment: (postId: string, content: string, image?: string, video?: string) => void;
+  addComment: (
+    postId: string,
+    content: string,
+    image?: string,
+    video?: string,
+  ) => void;
   likeComment: (postId: string, commentId: string) => void;
   sharePost: (postId: string) => void;
   sendFriendRequest: (userId: string) => void;
@@ -253,11 +274,28 @@ export interface AppContextType {
   deleteComment: (postId: string, commentId: string) => void;
   // Monetization methods
   enableProfessionalMode: (userId: string) => Promise<boolean>;
-  createAdCampaign: (campaign: Omit<AdCampaign, 'id' | 'createdAt' | 'impressions' | 'clicks' | 'spent'>) => Promise<string>;
-  processPayment: (payment: Omit<PaymentTransaction, 'id' | 'createdAt'>) => Promise<boolean>;
+  createAdCampaign: (
+    campaign: Omit<
+      AdCampaign,
+      "id" | "createdAt" | "impressions" | "clicks" | "spent"
+    >,
+  ) => Promise<string>;
+  processPayment: (
+    payment: Omit<PaymentTransaction, "id" | "createdAt">,
+  ) => Promise<boolean>;
   getAdCampaigns: (advertiserId?: string) => AdCampaign[];
   getUserEarnings: (userId: string) => UserEarnings | null;
-  requestWithdrawal: (userId: string, amount: number, method: PaymentMethod, phone: string) => Promise<boolean>;
+  requestWithdrawal: (
+    userId: string,
+    amount: number,
+    method: PaymentMethod,
+    phone: string,
+  ) => Promise<boolean>;
   getActiveAds: () => AdCampaign[];
-  recordAdImpression: (campaignId: string, userId: string, postId?: string, storyId?: string) => void;
+  recordAdImpression: (
+    campaignId: string,
+    userId: string,
+    postId?: string,
+    storyId?: string,
+  ) => void;
 }

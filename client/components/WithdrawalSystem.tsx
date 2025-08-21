@@ -1,47 +1,66 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Badge } from './ui/badge';
-import { Alert, AlertDescription } from './ui/alert';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { Progress } from './ui/progress';
-import { 
-  Wallet, 
-  Download, 
-  CreditCard, 
-  Clock, 
-  CheckCircle, 
+import React, { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { Badge } from "./ui/badge";
+import { Alert, AlertDescription } from "./ui/alert";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import { Progress } from "./ui/progress";
+import {
+  Wallet,
+  Download,
+  CreditCard,
+  Clock,
+  CheckCircle,
   AlertCircle,
   DollarSign,
   Smartphone,
   History,
-  RefreshCw
-} from 'lucide-react';
-import { PaymentMethod, PaymentTransaction, UserEarnings } from '@shared/types';
+  RefreshCw,
+} from "lucide-react";
+import { PaymentMethod, PaymentTransaction, UserEarnings } from "@shared/types";
 
 interface WithdrawalSystemProps {
   earnings: UserEarnings;
   withdrawalHistory: PaymentTransaction[];
-  onRequestWithdrawal: (amount: number, method: PaymentMethod, phone: string) => Promise<boolean>;
+  onRequestWithdrawal: (
+    amount: number,
+    method: PaymentMethod,
+    phone: string,
+  ) => Promise<boolean>;
 }
 
-export function WithdrawalSystem({ 
-  earnings, 
-  withdrawalHistory, 
-  onRequestWithdrawal 
+export function WithdrawalSystem({
+  earnings,
+  withdrawalHistory,
+  onRequestWithdrawal,
 }: WithdrawalSystemProps) {
   const [withdrawalAmount, setWithdrawalAmount] = useState(30);
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('bkash');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("bkash");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
   const MINIMUM_WITHDRAWAL = 30;
   const canWithdraw = earnings.currentBalance >= MINIMUM_WITHDRAWAL;
-  const withdrawalProgress = Math.min((earnings.currentBalance / MINIMUM_WITHDRAWAL) * 100, 100);
+  const withdrawalProgress = Math.min(
+    (earnings.currentBalance / MINIMUM_WITHDRAWAL) * 100,
+    100,
+  );
 
   const handleWithdrawal = async () => {
     if (!phoneNumber || withdrawalAmount < MINIMUM_WITHDRAWAL) {
@@ -50,23 +69,31 @@ export function WithdrawalSystem({
 
     setIsProcessing(true);
     try {
-      const success = await onRequestWithdrawal(withdrawalAmount, paymentMethod, phoneNumber);
+      const success = await onRequestWithdrawal(
+        withdrawalAmount,
+        paymentMethod,
+        phoneNumber,
+      );
       if (success) {
         setShowSuccess(true);
         setWithdrawalAmount(MINIMUM_WITHDRAWAL);
-        setPhoneNumber('');
+        setPhoneNumber("");
         setTimeout(() => setShowSuccess(false), 5000);
       }
     } catch (error) {
-      console.error('Withdrawal failed:', error);
+      console.error("Withdrawal failed:", error);
     } finally {
       setIsProcessing(false);
     }
   };
 
   const formatCurrency = (amount: number) => `$${amount.toFixed(2)}`;
-  const pendingWithdrawals = withdrawalHistory.filter(w => w.status === 'pending');
-  const completedWithdrawals = withdrawalHistory.filter(w => w.status === 'completed');
+  const pendingWithdrawals = withdrawalHistory.filter(
+    (w) => w.status === "pending",
+  );
+  const completedWithdrawals = withdrawalHistory.filter(
+    (w) => w.status === "completed",
+  );
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
@@ -95,7 +122,9 @@ export function WithdrawalSystem({
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium">বর্তমান ব্যালেন্স</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                  বর্তমান ব্যালেন্স
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-green-600">
@@ -109,15 +138,15 @@ export function WithdrawalSystem({
 
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium">মোট উত্তোলন</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                  মোট উত্তোলন
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-blue-600">
                   {formatCurrency(earnings.totalWithdrawn)}
                 </div>
-                <p className="text-xs text-muted-foreground mt-1">
-                  সর্বমোট
-                </p>
+                <p className="text-xs text-muted-foreground mt-1">সর্বমোট</p>
               </CardContent>
             </Card>
 
@@ -129,9 +158,7 @@ export function WithdrawalSystem({
                 <div className="text-2xl font-bold text-orange-600">
                   {pendingWithdrawals.length}
                 </div>
-                <p className="text-xs text-muted-foreground mt-1">
-                  অনুরোধ
-                </p>
+                <p className="text-xs text-muted-foreground mt-1">অনুরোধ</p>
               </CardContent>
             </Card>
           </div>
@@ -145,8 +172,10 @@ export function WithdrawalSystem({
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span>ন্যূনতম উত্তোলন: ${MINIMUM_WITHDRAWAL}</span>
-                  <span className={canWithdraw ? "text-green-600" : "text-red-600"}>
-                    {canWithdraw ? 'যোগ্য' : 'অযোগ্য'}
+                  <span
+                    className={canWithdraw ? "text-green-600" : "text-red-600"}
+                  >
+                    {canWithdraw ? "যোগ্য" : "অযোগ্য"}
                   </span>
                 </div>
                 <Progress value={withdrawalProgress} className="h-2" />
@@ -160,8 +189,12 @@ export function WithdrawalSystem({
                 <Alert>
                   <AlertCircle className="h-4 w-4" />
                   <AlertDescription>
-                    উত্তোলনের জন্য আরও {formatCurrency(MINIMUM_WITHDRAWAL - earnings.currentBalance)} আয় করুন।
-                    আপনার কন্টেন্টে আরও বিজ্ঞাপন দেখানো হলে আয় বাড়বে।
+                    উত্তোলনের জন্য আরও{" "}
+                    {formatCurrency(
+                      MINIMUM_WITHDRAWAL - earnings.currentBalance,
+                    )}{" "}
+                    আয় করুন। আপনার কন্টেন্টে আরও বিজ্ঞাপন দেখানো হলে আয়
+                    বাড়বে।
                   </AlertDescription>
                 </Alert>
               )}
@@ -182,7 +215,8 @@ export function WithdrawalSystem({
                   <Alert className="border-green-200 bg-green-50">
                     <CheckCircle className="h-4 w-4 text-green-600" />
                     <AlertDescription className="text-green-800">
-                      উত্তোলনের অনুরোধ সফলভাবে জমা দেওয়া হয়েছে! ২ৄ-৪৮ ঘন্টার মধ্যে প্রক্রিয়া করা হবে।
+                      উত্তোলনের অনুরোধ সফলভাবে জমা দেওয়া হয়েছে! ২ৄ-৪৮ ঘন্টার
+                      মধ্যে প্রক্রিয়া করা হবে।
                     </AlertDescription>
                   </Alert>
                 )}
@@ -197,7 +231,9 @@ export function WithdrawalSystem({
                         min={MINIMUM_WITHDRAWAL}
                         max={earnings.currentBalance}
                         value={withdrawalAmount}
-                        onChange={(e) => setWithdrawalAmount(parseFloat(e.target.value) || 0)}
+                        onChange={(e) =>
+                          setWithdrawalAmount(parseFloat(e.target.value) || 0)
+                        }
                         placeholder={`ন্যূনতম $${MINIMUM_WITHDRAWAL}`}
                       />
                       <p className="text-xs text-muted-foreground mt-1">
@@ -207,7 +243,12 @@ export function WithdrawalSystem({
 
                     <div>
                       <Label>পেমেন্ট পদ্ধতি</Label>
-                      <Select value={paymentMethod} onValueChange={(value: PaymentMethod) => setPaymentMethod(value)}>
+                      <Select
+                        value={paymentMethod}
+                        onValueChange={(value: PaymentMethod) =>
+                          setPaymentMethod(value)
+                        }
+                      >
                         <SelectTrigger>
                           <SelectValue />
                         </SelectTrigger>
@@ -230,7 +271,7 @@ export function WithdrawalSystem({
 
                     <div>
                       <Label htmlFor="phone">
-                        {paymentMethod === 'bkash' ? 'বিকাশ' : 'নগদ'} নম্বার
+                        {paymentMethod === "bkash" ? "বিকাশ" : "নগদ"} নম্বার
                       </Label>
                       <Input
                         id="phone"
@@ -246,16 +287,22 @@ export function WithdrawalSystem({
                     {/* Preview */}
                     <Card className="bg-blue-50">
                       <CardHeader className="pb-3">
-                        <CardTitle className="text-sm">উত্তোলনের বিবরণ</CardTitle>
+                        <CardTitle className="text-sm">
+                          উত্তোলনের বিবরণ
+                        </CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-2">
                         <div className="flex justify-between">
                           <span>পরিমাণ:</span>
-                          <span className="font-semibold">{formatCurrency(withdrawalAmount)}</span>
+                          <span className="font-semibold">
+                            {formatCurrency(withdrawalAmount)}
+                          </span>
                         </div>
                         <div className="flex justify-between">
                           <span>পদ্ধতি:</span>
-                          <span className="font-semibold capitalize">{paymentMethod}</span>
+                          <span className="font-semibold capitalize">
+                            {paymentMethod}
+                          </span>
                         </div>
                         <div className="flex justify-between">
                           <span>ফি:</span>
@@ -276,7 +323,10 @@ export function WithdrawalSystem({
                       <Clock className="h-4 w-4" />
                       <AlertDescription>
                         <ul className="text-sm space-y-1">
-                          <li>• উত্তোলনের অনুরোধ ২ৄ-৪৮ ঘন্টার মধ্যে প্রক্রিয়া করা হবে</li>
+                          <li>
+                            • উত্তোলনের অনুরোধ ২ৄ-৪৮ ঘন্টার মধ্যে প্রক্রিয়া করা
+                            হবে
+                          </li>
                           <li>• সর্বনিম্ন উত্তোলন ${MINIMUM_WITHDRAWAL}</li>
                           <li>• কোনো লুকানো ফি নেই</li>
                           <li>• সঠিক নম্বার দিন</li>
@@ -289,8 +339,8 @@ export function WithdrawalSystem({
                 <Button
                   onClick={handleWithdrawal}
                   disabled={
-                    isProcessing || 
-                    withdrawalAmount < MINIMUM_WITHDRAWAL || 
+                    isProcessing ||
+                    withdrawalAmount < MINIMUM_WITHDRAWAL ||
                     withdrawalAmount > earnings.currentBalance ||
                     !phoneNumber
                   }
@@ -322,63 +372,77 @@ export function WithdrawalSystem({
                 <History className="h-5 w-5" />
                 <span>উত্তোলনের ইতিহাস</span>
               </CardTitle>
-              <CardDescription>
-                আপনার সকল উত্তোলনের রেকর্ড
-              </CardDescription>
+              <CardDescription>আপনার সকল উত্তোলনের রেকর্ড</CardDescription>
             </CardHeader>
             <CardContent>
               {withdrawalHistory.length > 0 ? (
                 <div className="space-y-4">
                   {withdrawalHistory.map((transaction) => (
-                    <div 
-                      key={transaction.id} 
+                    <div
+                      key={transaction.id}
                       className="flex items-center justify-between p-4 border rounded-lg"
                     >
                       <div className="flex items-center space-x-4">
-                        <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                          transaction.status === 'completed' ? 'bg-green-100' :
-                          transaction.status === 'pending' ? 'bg-yellow-100' :
-                          'bg-red-100'
-                        }`}>
-                          {transaction.status === 'completed' ? (
+                        <div
+                          className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                            transaction.status === "completed"
+                              ? "bg-green-100"
+                              : transaction.status === "pending"
+                                ? "bg-yellow-100"
+                                : "bg-red-100"
+                          }`}
+                        >
+                          {transaction.status === "completed" ? (
                             <CheckCircle className="h-5 w-5 text-green-600" />
-                          ) : transaction.status === 'pending' ? (
+                          ) : transaction.status === "pending" ? (
                             <Clock className="h-5 w-5 text-yellow-600" />
                           ) : (
                             <AlertCircle className="h-5 w-5 text-red-600" />
                           )}
                         </div>
-                        
+
                         <div>
                           <div className="flex items-center space-x-2">
                             <span className="font-semibold">
                               {formatCurrency(transaction.amount)}
                             </span>
-                            <Badge 
+                            <Badge
                               variant={
-                                transaction.status === 'completed' ? 'default' :
-                                transaction.status === 'pending' ? 'secondary' :
-                                'destructive'
+                                transaction.status === "completed"
+                                  ? "default"
+                                  : transaction.status === "pending"
+                                    ? "secondary"
+                                    : "destructive"
                               }
                               className="text-xs"
                             >
-                              {transaction.status === 'completed' ? 'সম্পন্ন' :
-                               transaction.status === 'pending' ? 'অপেক্ষমাণ' : 'ব্যর্থ'}
+                              {transaction.status === "completed"
+                                ? "সম্পন্ন"
+                                : transaction.status === "pending"
+                                  ? "অপেক্ষমাণ"
+                                  : "ব্যর্থ"}
                             </Badge>
                           </div>
                           <div className="text-sm text-muted-foreground">
-                            {transaction.method.toUpperCase()} • {transaction.phone}
+                            {transaction.method.toUpperCase()} •{" "}
+                            {transaction.phone}
                           </div>
                           <div className="text-xs text-muted-foreground">
-                            {new Date(transaction.createdAt).toLocaleDateString('bn-BD')}
+                            {new Date(transaction.createdAt).toLocaleDateString(
+                              "bn-BD",
+                            )}
                           </div>
                         </div>
                       </div>
 
                       {transaction.transactionId && (
                         <div className="text-right">
-                          <div className="text-xs text-muted-foreground">Transaction ID</div>
-                          <div className="font-mono text-sm">{transaction.transactionId}</div>
+                          <div className="text-xs text-muted-foreground">
+                            Transaction ID
+                          </div>
+                          <div className="font-mono text-sm">
+                            {transaction.transactionId}
+                          </div>
                         </div>
                       )}
                     </div>
@@ -387,7 +451,9 @@ export function WithdrawalSystem({
               ) : (
                 <div className="text-center py-8">
                   <History className="h-12 w-12 text-muted-foreground mx-auto mb-2" />
-                  <p className="text-muted-foreground">এখনো কোনো উত্তোলনের ইতিহাস নেই</p>
+                  <p className="text-muted-foreground">
+                    এখনো কোনো উত্তোলনের ইতিহাস নেই
+                  </p>
                 </div>
               )}
             </CardContent>

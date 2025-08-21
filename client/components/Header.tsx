@@ -1,9 +1,26 @@
-import { Search, Home, Users, MessageCircle, Bell, Grid3X3, Menu, Shield, LogOut, Settings } from "lucide-react";
+import {
+  Search,
+  Home,
+  Users,
+  MessageCircle,
+  Bell,
+  Grid3X3,
+  Menu,
+  Shield,
+  LogOut,
+  Settings,
+} from "lucide-react";
 import { LogoWithText } from "./Logo";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 import { Badge } from "./ui/badge";
 import { Link, useNavigate } from "react-router-dom";
 import { HomeMenu } from "./HomeMenu";
@@ -17,7 +34,7 @@ export function Header() {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
@@ -33,11 +50,11 @@ export function Header() {
           <div className="hidden md:block">
             <HomeMenu />
           </div>
-          
+
           <div className="relative flex-1 max-w-xs">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input 
-              placeholder="Search Neo sixty" 
+            <Input
+              placeholder="Search Neo sixty"
               className="pl-10 bg-muted/50"
             />
           </div>
@@ -46,14 +63,26 @@ export function Header() {
         {/* Center: Navigation */}
         <nav className="hidden md:flex items-center space-x-1">
           <Link to="/">
-            <Button variant="ghost" size="lg" className="text-muted-foreground hover:text-primary">
+            <Button
+              variant="ghost"
+              size="lg"
+              className="text-muted-foreground hover:text-primary"
+            >
               <Home className="h-6 w-6" />
             </Button>
           </Link>
-          <Button variant="ghost" size="lg" className="text-muted-foreground hover:text-primary">
+          <Button
+            variant="ghost"
+            size="lg"
+            className="text-muted-foreground hover:text-primary"
+          >
             <Users className="h-6 w-6" />
           </Button>
-          <Button variant="ghost" size="lg" className="text-muted-foreground hover:text-primary">
+          <Button
+            variant="ghost"
+            size="lg"
+            className="text-muted-foreground hover:text-primary"
+          >
             <MessageCircle className="h-6 w-6" />
           </Button>
         </nav>
@@ -81,8 +110,10 @@ export function Header() {
                   </AvatarFallback>
                 </Avatar>
                 <div className="hidden md:flex flex-col items-start">
-                  <span className="text-sm font-medium">{authState.user?.name}</span>
-                  {authState.user?.role === 'admin' && (
+                  <span className="text-sm font-medium">
+                    {authState.user?.name}
+                  </span>
+                  {authState.user?.role === "admin" && (
                     <Badge variant="destructive" className="text-xs h-4">
                       এডমিন
                     </Badge>
@@ -98,11 +129,14 @@ export function Header() {
                 </Link>
               </DropdownMenuItem>
 
-              {authState.user?.role === 'admin' && (
+              {authState.user?.role === "admin" && (
                 <>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link to="/admin" className="flex items-center text-red-600">
+                    <Link
+                      to="/admin"
+                      className="flex items-center text-red-600"
+                    >
                       <Shield className="mr-2 h-4 w-4" />
                       এডমিন প্যানেল
                     </Link>

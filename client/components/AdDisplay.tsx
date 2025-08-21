@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent } from './ui/card';
-import { Button } from './ui/button';
-import { Badge } from './ui/badge';
-import { 
-  X, 
-  ExternalLink, 
-  Eye, 
+import React, { useState, useEffect } from "react";
+import { Card, CardContent } from "./ui/card";
+import { Button } from "./ui/button";
+import { Badge } from "./ui/badge";
+import {
+  X,
+  ExternalLink,
+  Eye,
   Clock,
   Play,
   Volume2,
   VolumeX,
-  Maximize2
-} from 'lucide-react';
-import { AdCampaign } from '@shared/types';
+  Maximize2,
+} from "lucide-react";
+import { AdCampaign } from "@shared/types";
 
 interface AdDisplayProps {
   ad: AdCampaign;
-  contentType: 'video' | 'image' | 'story' | 'text';
+  contentType: "video" | "image" | "story" | "text";
   onAdView: () => void;
   onAdClick: () => void;
   onAdClose?: () => void;
@@ -25,15 +25,15 @@ interface AdDisplayProps {
   className?: string;
 }
 
-export function AdDisplay({ 
-  ad, 
-  contentType, 
-  onAdView, 
-  onAdClick, 
+export function AdDisplay({
+  ad,
+  contentType,
+  onAdView,
+  onAdClick,
   onAdClose,
   autoPlay = false,
   showCloseButton = true,
-  className = ""
+  className = "",
 }: AdDisplayProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [countdown, setCountdown] = useState(5); // 5 second skip timer
@@ -46,9 +46,9 @@ export function AdDisplay({
     onAdView();
 
     // Start countdown for skippable ads
-    if (contentType === 'video' && ad.videoUrl) {
+    if (contentType === "video" && ad.videoUrl) {
       const timer = setInterval(() => {
-        setCountdown(prev => {
+        setCountdown((prev) => {
           if (prev <= 1) {
             setCanSkip(true);
             clearInterval(timer);
@@ -74,14 +74,14 @@ export function AdDisplay({
     onAdClick();
     // Open target URL in new tab
     if (ad.targetUrl) {
-      window.open(ad.targetUrl, '_blank', 'noopener,noreferrer');
+      window.open(ad.targetUrl, "_blank", "noopener,noreferrer");
     }
   };
 
   if (!isVisible) return null;
 
   // Video Ad Component
-  if (contentType === 'video' && ad.videoUrl) {
+  if (contentType === "video" && ad.videoUrl) {
     return (
       <Card className={`relative overflow-hidden bg-black ${className}`}>
         <div className="relative aspect-video">
@@ -94,7 +94,7 @@ export function AdDisplay({
           >
             <source src={ad.videoUrl} type="video/mp4" />
           </video>
-          
+
           {/* Video Controls Overlay */}
           <div className="absolute inset-0 bg-black bg-opacity-20">
             {/* Top Bar */}
@@ -104,7 +104,7 @@ export function AdDisplay({
                   <Eye className="h-3 w-3 mr-1" />
                   বিজ্ঞাপন
                 </Badge>
-                
+
                 {showCloseButton && canSkip && (
                   <Button
                     variant="secondary"
@@ -115,7 +115,7 @@ export function AdDisplay({
                     <X className="h-4 w-4" />
                   </Button>
                 )}
-                
+
                 {!canSkip && (
                   <Badge variant="secondary" className="bg-black/60 text-white">
                     <Clock className="h-3 w-3 mr-1" />
@@ -149,9 +149,13 @@ export function AdDisplay({
                     onClick={() => setIsMuted(!isMuted)}
                     className="text-white hover:bg-white/20"
                   >
-                    {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+                    {isMuted ? (
+                      <VolumeX className="h-4 w-4" />
+                    ) : (
+                      <Volume2 className="h-4 w-4" />
+                    )}
                   </Button>
-                  
+
                   <Button
                     variant="ghost"
                     size="sm"
@@ -178,9 +182,11 @@ export function AdDisplay({
           <div className="flex justify-between items-start">
             <div className="flex-1">
               <h3 className="font-semibold text-lg">{ad.title}</h3>
-              <p className="text-muted-foreground text-sm mt-1">{ad.description}</p>
+              <p className="text-muted-foreground text-sm mt-1">
+                {ad.description}
+              </p>
             </div>
-            <Button 
+            <Button
               onClick={handleAdClick}
               variant="outline"
               size="sm"
@@ -196,7 +202,9 @@ export function AdDisplay({
 
   // Image/Banner Ad Component
   return (
-    <Card className={`relative overflow-hidden cursor-pointer group ${className}`}>
+    <Card
+      className={`relative overflow-hidden cursor-pointer group ${className}`}
+    >
       <div className="relative" onClick={handleAdClick}>
         {/* Close Button */}
         {showCloseButton && (
@@ -214,8 +222,8 @@ export function AdDisplay({
         )}
 
         {/* Ad Badge */}
-        <Badge 
-          variant="secondary" 
+        <Badge
+          variant="secondary"
           className="absolute top-2 left-2 z-10 bg-black/60 text-white"
         >
           <Eye className="h-3 w-3 mr-1" />
@@ -262,7 +270,7 @@ export function AdDisplay({
 // Inline Ad Component for Posts/Stories
 interface InlineAdProps {
   ads: AdCampaign[];
-  onAdInteraction: (adId: string, type: 'view' | 'click') => void;
+  onAdInteraction: (adId: string, type: "view" | "click") => void;
 }
 
 export function InlineAd({ ads, onAdInteraction }: InlineAdProps) {
@@ -271,7 +279,7 @@ export function InlineAd({ ads, onAdInteraction }: InlineAdProps) {
   useEffect(() => {
     // Rotate ads every 30 seconds
     const interval = setInterval(() => {
-      setCurrentAdIndex(prev => (prev + 1) % ads.length);
+      setCurrentAdIndex((prev) => (prev + 1) % ads.length);
     }, 30000);
 
     return () => clearInterval(interval);
@@ -286,8 +294,8 @@ export function InlineAd({ ads, onAdInteraction }: InlineAdProps) {
       <AdDisplay
         ad={currentAd}
         contentType="image"
-        onAdView={() => onAdInteraction(currentAd.id, 'view')}
-        onAdClick={() => onAdInteraction(currentAd.id, 'click')}
+        onAdView={() => onAdInteraction(currentAd.id, "view")}
+        onAdClick={() => onAdInteraction(currentAd.id, "click")}
         showCloseButton={false}
         className="border-l-4 border-blue-500"
       />
@@ -298,7 +306,7 @@ export function InlineAd({ ads, onAdInteraction }: InlineAdProps) {
 // Story Ad Component
 interface StoryAdProps {
   ad: AdCampaign;
-  onAdInteraction: (adId: string, type: 'view' | 'click') => void;
+  onAdInteraction: (adId: string, type: "view" | "click") => void;
   onNext: () => void;
 }
 
@@ -307,13 +315,13 @@ export function StoryAd({ ad, onAdInteraction, onNext }: StoryAdProps) {
 
   useEffect(() => {
     // Record view
-    onAdInteraction(ad.id, 'view');
+    onAdInteraction(ad.id, "view");
 
     // Auto-advance after 7 seconds
     const duration = 7000; // 7 seconds
     const interval = setInterval(() => {
-      setProgress(prev => {
-        const newProgress = prev + (100 / (duration / 100));
+      setProgress((prev) => {
+        const newProgress = prev + 100 / (duration / 100);
         if (newProgress >= 100) {
           clearInterval(interval);
           setTimeout(onNext, 100);
@@ -330,15 +338,15 @@ export function StoryAd({ ad, onAdInteraction, onNext }: StoryAdProps) {
     <div className="relative h-full bg-gradient-to-br from-blue-600 to-purple-600 text-white">
       {/* Progress Bar */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-white/30">
-        <div 
+        <div
           className="h-full bg-white transition-all duration-100"
           style={{ width: `${progress}%` }}
         />
       </div>
 
       {/* Ad Badge */}
-      <Badge 
-        variant="secondary" 
+      <Badge
+        variant="secondary"
         className="absolute top-4 left-4 bg-black/60 text-white"
       >
         <Eye className="h-3 w-3 mr-1" />
@@ -364,15 +372,15 @@ export function StoryAd({ ad, onAdInteraction, onNext }: StoryAdProps) {
             className="w-32 h-32 object-cover rounded-lg mb-6"
           />
         )}
-        
+
         <h2 className="text-2xl font-bold mb-4">{ad.title}</h2>
         <p className="text-lg mb-6 opacity-90">{ad.description}</p>
-        
+
         <Button
           onClick={() => {
-            onAdInteraction(ad.id, 'click');
+            onAdInteraction(ad.id, "click");
             if (ad.targetUrl) {
-              window.open(ad.targetUrl, '_blank', 'noopener,noreferrer');
+              window.open(ad.targetUrl, "_blank", "noopener,noreferrer");
             }
           }}
           size="lg"

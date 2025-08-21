@@ -1,82 +1,97 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Label } from '../components/ui/label';
-import { Alert, AlertDescription } from '../components/ui/alert';
-import { Loader2, UserPlus, User, Phone, Lock, Mail, Eye, EyeOff } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
-import { RegisterData } from '@shared/types';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
+import { Label } from "../components/ui/label";
+import { Alert, AlertDescription } from "../components/ui/alert";
+import {
+  Loader2,
+  UserPlus,
+  User,
+  Phone,
+  Lock,
+  Mail,
+  Eye,
+  EyeOff,
+} from "lucide-react";
+import { useAuth } from "../context/AuthContext";
+import { RegisterData } from "@shared/types";
 
 export default function Register() {
   const [formData, setFormData] = useState<RegisterData>({
-    name: '',
-    phoneOrEmail: '',
-    password: ''
+    name: "",
+    phoneOrEmail: "",
+    password: "",
   });
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const { register, authState, adminSettings } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     // Validation
     if (!formData.name || !formData.phoneOrEmail || !formData.password) {
-      setError('সকল ফিল্ড পূরণ করুন');
+      setError("সকল ফিল্ড পূরণ করুন");
       return;
     }
 
     if (formData.name.length < 2) {
-      setError('নাম কমপক্ষে ২ অক্ষরের হতে হবে');
+      setError("নাম কমপক্ষে ২ অক্ষরের হতে হবে");
       return;
     }
 
     if (formData.password.length < 6) {
-      setError('পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে');
+      setError("পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে");
       return;
     }
 
     if (formData.password !== confirmPassword) {
-      setError('পাসওয়ার্ড মিলছে না');
+      setError("পাসওয়ার্ড মিলছে না");
       return;
     }
 
     // Phone number validation (Bangladeshi format)
-    if (!formData.phoneOrEmail.includes('@')) {
+    if (!formData.phoneOrEmail.includes("@")) {
       const phoneRegex = /^01[3-9]\d{8}$/;
       if (!phoneRegex.test(formData.phoneOrEmail)) {
-        setError('সঠিক ফোন নম্বর দিন (01XXXXXXXXX)');
+        setError("সঠিক ফোন নম্বর দিন (01XXXXXXXXX)");
         return;
       }
     } else {
       // Email validation
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(formData.phoneOrEmail)) {
-        setError('সঠিক ইমেইল ঠিকানা দিন');
+        setError("সঠিক ইমেইল ঠিকানা দিন");
         return;
       }
     }
 
     const success = await register(formData);
     if (success) {
-      navigate('/');
+      navigate("/");
     }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (name === 'confirmPassword') {
+    if (name === "confirmPassword") {
       setConfirmPassword(value);
     } else {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        [name]: value
+        [name]: value,
       }));
     }
   };
@@ -129,7 +144,7 @@ export default function Register() {
               আপনার তথ্য দিয়ে অ্যাকাউন্ট তৈরি করুন
             </CardDescription>
           </CardHeader>
-          
+
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
@@ -161,7 +176,7 @@ export default function Register() {
                 <Label htmlFor="phoneOrEmail">ফোন নম্বার অথবা ইমেইল</Label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    {formData.phoneOrEmail.includes('@') ? (
+                    {formData.phoneOrEmail.includes("@") ? (
                       <Mail className="h-4 w-4 text-gray-400" />
                     ) : (
                       <Phone className="h-4 w-4 text-gray-400" />
@@ -240,9 +255,9 @@ export default function Register() {
                 </div>
               </div>
 
-              <Button 
-                type="submit" 
-                className="w-full bg-blue-600 hover:bg-blue-700" 
+              <Button
+                type="submit"
+                className="w-full bg-blue-600 hover:bg-blue-700"
                 disabled={authState.isLoading}
               >
                 {authState.isLoading ? (
@@ -261,9 +276,9 @@ export default function Register() {
 
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
-                ইতিমধ্যে অ্যাকাউন্ট আছে?{' '}
-                <Link 
-                  to="/login" 
+                ইতিমধ্যে অ্যাকাউন্ট আছে?{" "}
+                <Link
+                  to="/login"
                   className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
                 >
                   লগইন করুন

@@ -34,7 +34,7 @@ function AdminRoute({ children }: { children: React.ReactNode }) {
     return <Navigate to="/login" replace />;
   }
 
-  if (authState.user?.role !== 'admin') {
+  if (authState.user?.role !== "admin") {
     return <Navigate to="/" replace />;
   }
 
@@ -48,9 +48,7 @@ function AppLayout({ children }: { children: React.ReactNode }) {
       <Header />
       <div className="flex">
         <Sidebar />
-        <main className="flex-1 min-w-0">
-          {children}
-        </main>
+        <main className="flex-1 min-w-0">{children}</main>
         <RightSidebar />
       </div>
     </div>

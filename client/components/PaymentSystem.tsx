@@ -1,23 +1,41 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Badge } from './ui/badge';
-import { Alert, AlertDescription } from './ui/alert';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/dialog';
-import { 
-  CreditCard, 
-  Smartphone, 
-  DollarSign, 
-  CheckCircle, 
+import React, { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { Badge } from "./ui/badge";
+import { Alert, AlertDescription } from "./ui/alert";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/dialog";
+import {
+  CreditCard,
+  Smartphone,
+  DollarSign,
+  CheckCircle,
   AlertCircle,
   Clock,
   Copy,
-  ExternalLink
-} from 'lucide-react';
-import { PaymentMethod, PaymentTransaction } from '@shared/types';
+  ExternalLink,
+} from "lucide-react";
+import { PaymentMethod, PaymentTransaction } from "@shared/types";
 
 interface PaymentSystemProps {
   amount: number;
@@ -26,12 +44,17 @@ interface PaymentSystemProps {
   onPaymentFailure: (error: string) => void;
 }
 
-const PAYMENT_RECEIVER = '01650074073';
+const PAYMENT_RECEIVER = "01650074073";
 
-export function PaymentSystem({ amount, purpose, onPaymentSuccess, onPaymentFailure }: PaymentSystemProps) {
-  const [method, setMethod] = useState<PaymentMethod>('bkash');
-  const [senderPhone, setSenderPhone] = useState('');
-  const [transactionId, setTransactionId] = useState('');
+export function PaymentSystem({
+  amount,
+  purpose,
+  onPaymentSuccess,
+  onPaymentFailure,
+}: PaymentSystemProps) {
+  const [method, setMethod] = useState<PaymentMethod>("bkash");
+  const [senderPhone, setSenderPhone] = useState("");
+  const [transactionId, setTransactionId] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [step, setStep] = useState(1); // 1: Select method, 2: Payment instructions, 3: Verify
 
@@ -46,46 +69,46 @@ export function PaymentSystem({ amount, purpose, onPaymentSuccess, onPaymentFail
 
   const handlePaymentSubmit = async () => {
     if (!senderPhone || !transactionId) {
-      onPaymentFailure('সকল তথ্য পূরণ করুন');
+      onPaymentFailure("সকল তথ্য পূরণ করুন");
       return;
     }
 
     setIsProcessing(true);
-    
+
     try {
       // Simulate payment verification
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       // In a real implementation, this would verify with the payment gateway
       const success = Math.random() > 0.1; // 90% success rate for demo
-      
+
       if (success) {
         onPaymentSuccess(transactionId);
         setStep(4); // Success step
       } else {
-        onPaymentFailure('��েমেন্ট যাচাই করা যায়নি। আবার চেষ্টা করুন।');
+        onPaymentFailure("��েমেন্ট যাচাই করা যায়নি। আবার চেষ্টা করুন।");
       }
     } catch (error) {
-      onPaymentFailure('পেমেন্ট প্রক্রিয়ায় সমস্যা হয়েছে');
+      onPaymentFailure("পেমেন্ট প্রক্রিয়ায় সমস্যা হয়েছে");
     } finally {
       setIsProcessing(false);
     }
   };
 
   const openPaymentApp = () => {
-    const phoneNumber = PAYMENT_RECEIVER.replace(/\+88/, '');
-    let url = '';
-    
-    if (method === 'bkash') {
+    const phoneNumber = PAYMENT_RECEIVER.replace(/\+88/, "");
+    let url = "";
+
+    if (method === "bkash") {
       // bKash app deep link (if available)
       url = `intent://pay?phone=${phoneNumber}&amount=${amount}#Intent;scheme=bkash;package=com.bkash.customerapp;end`;
-    } else if (method === 'nagad') {
+    } else if (method === "nagad") {
       // Nagad app deep link (if available)
       url = `intent://pay?phone=${phoneNumber}&amount=${amount}#Intent;scheme=nagad;package=com.konitbd.nagad;end`;
     }
-    
+
     // Fallback to manual instructions if deep links don't work
-    window.open(url, '_blank');
+    window.open(url, "_blank");
   };
 
   return (
@@ -107,18 +130,18 @@ export function PaymentSystem({ amount, purpose, onPaymentSuccess, onPaymentFail
               <Button
                 variant="outline"
                 className="h-20 flex flex-col items-center space-y-2"
-                onClick={() => handleMethodSelect('bkash')}
+                onClick={() => handleMethodSelect("bkash")}
               >
                 <div className="w-8 h-8 bg-pink-600 rounded flex items-center justify-center">
                   <Smartphone className="h-5 w-5 text-white" />
                 </div>
                 <span>বিকাশ</span>
               </Button>
-              
+
               <Button
                 variant="outline"
                 className="h-20 flex flex-col items-center space-y-2"
-                onClick={() => handleMethodSelect('nagad')}
+                onClick={() => handleMethodSelect("nagad")}
               >
                 <div className="w-8 h-8 bg-orange-600 rounded flex items-center justify-center">
                   <Smartphone className="h-5 w-5 text-white" />
@@ -135,16 +158,20 @@ export function PaymentSystem({ amount, purpose, onPaymentSuccess, onPaymentFail
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
-              <div className={`w-6 h-6 rounded ${method === 'bkash' ? 'bg-pink-600' : 'bg-orange-600'} flex items-center justify-center`}>
+              <div
+                className={`w-6 h-6 rounded ${method === "bkash" ? "bg-pink-600" : "bg-orange-600"} flex items-center justify-center`}
+              >
                 <Smartphone className="h-4 w-4 text-white" />
               </div>
-              <span>{method === 'bkash' ? 'বিকাশ' : 'নগদ'} পেমেন্ট</span>
+              <span>{method === "bkash" ? "বিকাশ" : "নগদ"} পেমেন্ট</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Amount Display */}
             <div className="text-center p-4 bg-blue-50 rounded-lg">
-              <div className="text-sm text-muted-foreground mb-1">পেমেন্ট পরিমাণ</div>
+              <div className="text-sm text-muted-foreground mb-1">
+                পেমেন্ট পরিমাণ
+              </div>
               <div className="text-3xl font-bold text-blue-600">৳{amount}</div>
             </div>
 
@@ -155,7 +182,7 @@ export function PaymentSystem({ amount, purpose, onPaymentSuccess, onPaymentFail
                 <div className="space-y-2">
                   <p className="font-semibold">পেমেন্ট করার নিয়ম:</p>
                   <ol className="list-decimal list-inside space-y-1 text-sm">
-                    <li>{method === 'bkash' ? 'বিকাশ' : 'নগদ'} অ্যাপ খুলুন</li>
+                    <li>{method === "bkash" ? "বিকাশ" : "নগদ"} অ্যাপ খুলুন</li>
                     <li>"Send Money" অপশনে ক্লিক করুন</li>
                     <li>নিচের নম্বারে টাকা পাঠান</li>
                     <li>Transaction ID সংরক্ষণ করুন</li>
@@ -168,8 +195,12 @@ export function PaymentSystem({ amount, purpose, onPaymentSuccess, onPaymentFail
             <div className="space-y-3">
               <div className="flex items-center justify-between p-3 border rounded-lg">
                 <div>
-                  <div className="text-sm text-muted-foreground">প্রাপকের নম্বার</div>
-                  <div className="font-mono text-lg font-semibold">{PAYMENT_RECEIVER}</div>
+                  <div className="text-sm text-muted-foreground">
+                    প্রাপকের নম্বার
+                  </div>
+                  <div className="font-mono text-lg font-semibold">
+                    {PAYMENT_RECEIVER}
+                  </div>
                 </div>
                 <Button
                   variant="outline"
@@ -183,7 +214,9 @@ export function PaymentSystem({ amount, purpose, onPaymentSuccess, onPaymentFail
               <div className="flex items-center justify-between p-3 border rounded-lg">
                 <div>
                   <div className="text-sm text-muted-foreground">পরিমাণ</div>
-                  <div className="font-mono text-lg font-semibold">৳{amount}</div>
+                  <div className="font-mono text-lg font-semibold">
+                    ৳{amount}
+                  </div>
                 </div>
                 <Button
                   variant="outline"
@@ -198,12 +231,12 @@ export function PaymentSystem({ amount, purpose, onPaymentSuccess, onPaymentFail
             {/* Quick Action Button */}
             <Button onClick={openPaymentApp} className="w-full" size="lg">
               <ExternalLink className="mr-2 h-4 w-4" />
-              {method === 'bkash' ? 'বিকাশ' : 'নগদ'} অ্যাপে যান
+              {method === "bkash" ? "বিকাশ" : "নগদ"} অ্যাপে যান
             </Button>
 
-            <Button 
-              variant="outline" 
-              onClick={() => setStep(3)} 
+            <Button
+              variant="outline"
+              onClick={() => setStep(3)}
               className="w-full"
             >
               পেমেন্ট সম্পন্ন হয়েছে
@@ -223,7 +256,9 @@ export function PaymentSystem({ amount, purpose, onPaymentSuccess, onPaymentFail
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <Label htmlFor="senderPhone">আপনার {method === 'bkash' ? 'বিকাশ' : 'নগদ'} নম্বার</Label>
+              <Label htmlFor="senderPhone">
+                আপনার {method === "bkash" ? "বিকাশ" : "নগদ"} নম্বার
+              </Label>
               <Input
                 id="senderPhone"
                 placeholder="01XXXXXXXXX"
@@ -245,19 +280,20 @@ export function PaymentSystem({ amount, purpose, onPaymentSuccess, onPaymentFail
             <Alert>
               <Clock className="h-4 w-4" />
               <AlertDescription>
-                Transaction ID পেতে আপনার {method === 'bkash' ? 'বিকাশ' : 'নগদ'} এ পাঠানো SMS চেক করুন
+                Transaction ID পেতে আপনার {method === "bkash" ? "বিকাশ" : "নগদ"}{" "}
+                এ পাঠানো SMS চেক করুন
               </AlertDescription>
             </Alert>
 
             <div className="flex space-x-3">
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 onClick={() => setStep(2)}
                 className="flex-1"
               >
                 পূর্ববর্তী
               </Button>
-              <Button 
+              <Button
                 onClick={handlePaymentSubmit}
                 disabled={isProcessing || !senderPhone || !transactionId}
                 className="flex-1"
@@ -268,7 +304,7 @@ export function PaymentSystem({ amount, purpose, onPaymentSuccess, onPaymentFail
                     যাচাই করা হচ্ছে...
                   </>
                 ) : (
-                  'পেমেন্ট যাচাই করুন'
+                  "পেমেন্ট যাচাই করুন"
                 )}
               </Button>
             </div>
@@ -304,7 +340,13 @@ interface PaymentDialogProps {
   onSuccess: (transactionId: string) => void;
 }
 
-export function PaymentDialog({ isOpen, onClose, amount, purpose, onSuccess }: PaymentDialogProps) {
+export function PaymentDialog({
+  isOpen,
+  onClose,
+  amount,
+  purpose,
+  onSuccess,
+}: PaymentDialogProps) {
   const handlePaymentSuccess = (transactionId: string) => {
     onSuccess(transactionId);
     onClose();

@@ -1,4 +1,18 @@
-import { ChevronDown, Home, Users, Store, Video, Calendar, Bookmark, Clock, Settings, HelpCircle, LogOut, Target, Crown } from "lucide-react";
+import {
+  ChevronDown,
+  Home,
+  Users,
+  Store,
+  Video,
+  Calendar,
+  Bookmark,
+  Clock,
+  Settings,
+  HelpCircle,
+  LogOut,
+  Target,
+  Crown,
+} from "lucide-react";
 import { Button } from "./ui/button";
 import {
   DropdownMenu,
@@ -25,7 +39,7 @@ export function HomeMenu() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-64" align="start">
         <DropdownMenuLabel>Navigation</DropdownMenuLabel>
-        
+
         <Link to="/">
           <DropdownMenuItem className="flex items-center gap-3 p-3">
             <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
@@ -89,7 +103,9 @@ export function HomeMenu() {
             </div>
             <div>
               <p className="font-medium">Create Ads</p>
-              <p className="text-xs text-muted-foreground">বিজ্ঞাপন তৈরি করুন</p>
+              <p className="text-xs text-muted-foreground">
+                বিজ্ঞাপন তৈরি করুন
+              </p>
             </div>
           </DropdownMenuItem>
         </Link>
@@ -102,14 +118,16 @@ export function HomeMenu() {
               </div>
               <div>
                 <p className="font-medium">Professional Dashboard</p>
-                <p className="text-xs text-muted-foreground">মনিটাইজেশন ড্যাশবোর্ড</p>
+                <p className="text-xs text-muted-foreground">
+                  মনিটাইজেশন ড্যাশবোর্ড
+                </p>
               </div>
             </DropdownMenuItem>
           </Link>
         )}
 
         <DropdownMenuSeparator />
-        
+
         <DropdownMenuLabel>More Tools</DropdownMenuLabel>
 
         <DropdownMenuItem className="flex items-center gap-3 p-3">
