@@ -389,21 +389,30 @@ function appReducer(state: AppState, action: Action): AppState {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
+interface AppContextType {
+  state: AppState;
+  addPost: (content: string, isHtml: boolean, image?: string, video?: string, mentions?: string[], tags?: string[]) => void;
+  addStory: (image: string) => void;
+  addReaction: (postId: string, reactionType: ReactionType) => void;
+  removeReaction: (postId: string, reactionType: ReactionType) => void;
+  addComment: (postId: string, content: string, image?: string, video?: string) => void;
+  likeComment: (postId: string, commentId: string) => void;
+  sharePost: (postId: string) => void;
+  sendFriendRequest: (userId: string) => void;
+  acceptFriendRequest: (requestId: string) => void;
+  followUser: (userId: string) => void;
+  unfollowUser: (userId: string) => void;
+  updateUserProfile: (profile: UserProfile) => void;
+  updateUserAvatar: (avatar: string) => void;
+  updateFollowerCount: (userId: string, increment: boolean) => void;
+  checkAndUpdateVerification: (userId: string) => void;
+  deletePost: (postId: string) => void;
+  deleteComment: (postId: string, commentId: string) => void;
+  updateCurrentUser: (user: User) => void;
+}
+
 export function AppProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(appReducer, initialState);
-
-  // Import auth context to sync current user
-  const authContext = useAuth();
-
-  // Update current user when authentication changes
-  React.useEffect(() => {
-    if (authContext.authState.user && authContext.authState.user.id !== state.currentUser.id) {
-      dispatch({
-        type: 'UPDATE_CURRENT_USER',
-        payload: { user: authContext.authState.user }
-      });
-    }
-  }, [authContext.authState.user, state.currentUser.id]);
 
   const addPost = (content: string, isHtml: boolean, image?: string, video?: string, mentions?: string[], tags?: string[]) => {
     dispatch({
