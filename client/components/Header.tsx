@@ -12,6 +12,14 @@ import { useAuth } from "../context/AuthContext";
 import { cn } from "@/lib/utils";
 
 export function Header() {
+  const { authState, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
       <div className="container flex h-16 items-center justify-between px-4">
